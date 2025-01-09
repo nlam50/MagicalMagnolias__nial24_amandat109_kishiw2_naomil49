@@ -16,23 +16,23 @@ Points called “flower score” will be assigned based on (equal to) the number
 These interactions take place on a grid-based garden using JavaScript. The user’s profile displays minigame statistics and the flower score, as well as “picked” flowers. Users must be logged in to play.
 
 ## Install Guide:
-  To install, go to the top of the page and click the green button that says "Code". In the dropdown that appears, click "Download Zip" at the bottom. Extract the zip from your downloads into your home directory. <br>
+  1. To install, go to the top of the page and click the green button that says "Code". In the dropdown that appears, click "Download Zip" at the bottom. Extract the zip from your downloads into your home directory. <br>
 
-OR
+  OR
   
-  To clone the repository, go to the top of the page and click the green button that says "Code". In the dropdown that appears, choose either "HTTPS" or "SSH" under the "Clone" section and copy the provided URL. Open up your computer's terminal and type "git clone {URL HERE}"
+  1. To clone the repository, go to the top of the page and click the green button that says "Code". In the dropdown that appears, choose either "HTTPS" or "SSH" under the "Clone" section and copy the provided URL. Open up your computer's terminal and type "git clone {URL HERE}"
 
-1. Make a python virtual environment if one does not already exist
+  2. Make a python virtual environment if one does not already exist
 
       a. Open up your device's terminal
 
       b. Type ```$ python3 -m venv {path name}``` or ```$ py -m venv {path name}```
 
-  1. Ensure your virtual environment is activated
+  3. Ensure your virtual environment is activated
 
-  1. Access the repository by typing ```$ cd MagicalMagnolias__nial24_amandat109_kishiw2_naomil49/```
+  4. Access the repository by typing ```$ cd MagicalMagnolias__nial24_amandat109_kishiw2_naomil49/```
 
-  1. Type ```$ pip install -r requirements.txt``` to install the required modules
+  5. Type ```$ pip install -r requirements.txt``` to install the required modules
 
  - If terminal returns ```zsh: command not found: pip```, type ```$ pip3 install -r requirements.txt``` because ```$ pip``` is for python2.
 
