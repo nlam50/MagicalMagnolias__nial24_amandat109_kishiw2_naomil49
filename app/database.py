@@ -43,7 +43,7 @@ def register_user():
                 conn.commit()
                 flash('registered')
         except sqlite3.IntegrityError:
-            flash('error')
+            flash('username already exists')
     return redirect('/login')
 
 def login_user():
@@ -69,3 +69,9 @@ def login_user():
             else:
                 flash('invalid credentials')
     return redirect('/login')
+
+def logout_user():
+    session.pop('username',)
+    flash('logged out')
+    return redirect('/login')
+        

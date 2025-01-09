@@ -7,7 +7,7 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session
-from database import register_user, login_user, init_db
+from database import register_user, login_user, init_db, logout_user
 
 # Session
 app = Flask(__name__)
@@ -31,6 +31,8 @@ def login():
             return register_user()
         if request.form.get('login'):
             return login_user()
+        if request.form.get('logout'):
+            return logout_user()
         else:
             flash('form error')
     return render_template('login.html')
