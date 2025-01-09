@@ -1,10 +1,10 @@
-amandaT, kishiW, naomiL, niaL -- 2024-01-09 01:30
+amandaT, kishiW, naomiL, niaL -- 2025-01-09 01:30
 * Numerous changes to devlog (based on feedback and other):
   * New premise:
     * Progression towards goal (point system)
       * Worth of flowers depending on time needed to grow flower
     * Resource (for growing flowers):
-      * Removal of sunlight as resource 
+      * Removal of sunlight as resource
       * Replacement of coins with magic power
         * Used to purchase flower seeds
       * Water -> Infinite
@@ -31,3 +31,10 @@ amandaT, kishiW, naomiL, niaL -- 2024-01-09 01:30
   * Opened consideration of future API incorporation for minigames
   * More detailed task breakdown among devos
 * Updated README.md to reflect new project description
+
+naomiL, amandaT -- 2025-01-09 10:59
+* set up file structure
+* created initial routing for home and login with skeleton functionalities
+* set up html necessary information (login and register forms)
+* created requirements.txt
+* added keys readme, install guide, and launch codes
