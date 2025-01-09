@@ -27,9 +27,9 @@ def home():
 def login():
     # If form info is from register, register the user; if info from login, user logs in
     if request.method == 'POST':
-        if request.form.get['register']:
+        if request.form.get('register'):
             return register_user()
-        if request.form.get['login']:
+        if request.form.get('login'):
             return login_user()
         else:
             flash('form error')

@@ -6,6 +6,7 @@
 
 # Imports
 import os, sqlite3
+from flask import request, redirect, render_template, flash
 
 # database initialization
 
@@ -29,13 +30,25 @@ def register_user():
     return 1
 
 def login_user():
-#     username = request.form.get('username')
-#     password = request.form.get('password')
+    username = request.form.get('username')
+    password = request.form.get('password')
 
-#     if not username or not password:
-#         flash('fill all fields')
-#         return redirect('/login')
+    if not username or not password:
+        flash('fill all fields')
+        return redirect('/login')
 
-#     with sqlite3.connect('user_info.db') as conn:
-#         cur
-    return 1
+    with sqlite3.connect('user_info.db') as conn:
+        cursor = conn.cursor()
+        # q = 'SELECT password FROM users WHERE username = ? (' + username + ',)'
+        # cursor.execute(q)
+        cursor.execute('SELECT password FROM users WHERE username = ?', (username,))
+        user_pass = cursor.fetchone()
+
+        if user_pass:
+            if user_pass[0] == password:
+                session['username'] = username
+                flash('logged in')
+                return redirect('/')
+        else:
+            flash('invalid credentials')
+    return redirect('/login')

@@ -14,6 +14,15 @@
   </head>
 
   <body>
+    <!-- flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <p id="flashes">{{ message }}</p>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
     This is the login page.<br><br>
 
     <form action="/login" method="POST">
