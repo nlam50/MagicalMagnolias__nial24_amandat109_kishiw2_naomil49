@@ -6,12 +6,14 @@
 
 # Imports
 import os
-from flask import Flask, render_template, session, redirect, request
-from database import register_user, login_user
+from flask import Flask, render_template, redirect, request, session
+from database import register_user, login_user, init_db
 
 # Session
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+
+init_db()
 
 # Routing
 
