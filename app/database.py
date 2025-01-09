@@ -6,7 +6,7 @@
 
 # Imports
 import os, sqlite3
-from flask import request, redirect, render_template, flash
+from flask import request, redirect, render_template, flash, session
 
 # database initialization
 
@@ -27,7 +27,24 @@ def init_db():
         conn.close()
 
 def register_user():
-    return 1
+    username = request.form.get('username')
+    password = request.form.get('password')
+    confirm_pass = request.form.get('confirm_pass')
+
+    if not username or not password or not confirm_pass:
+        flash('fill all fields')
+    elif password != confirm_pass:
+        flash('passwords dont match')
+    else:
+        try:
+            with sqlite3.connect('user_info.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
+                conn.commit()
+                flash('registered')
+        except sqlite3.IntegrityError:
+            flash('error')
+    return redirect('/login')
 
 def login_user():
     username = request.form.get('username')
@@ -36,19 +53,19 @@ def login_user():
     if not username or not password:
         flash('fill all fields')
         return redirect('/login')
+    else:
+        with sqlite3.connect('user_info.db') as conn:
+            cursor = conn.cursor()
+            # q = 'SELECT password FROM users WHERE username = ? (' + username + ',)'
+            # cursor.execute(q)
+            cursor.execute('SELECT password FROM users WHERE username = ?', (username,))
+            user_pass = cursor.fetchone()
 
-    with sqlite3.connect('user_info.db') as conn:
-        cursor = conn.cursor()
-        # q = 'SELECT password FROM users WHERE username = ? (' + username + ',)'
-        # cursor.execute(q)
-        cursor.execute('SELECT password FROM users WHERE username = ?', (username,))
-        user_pass = cursor.fetchone()
-
-        if user_pass:
-            if user_pass[0] == password:
-                session['username'] = username
-                flash('logged in')
-                return redirect('/')
-        else:
-            flash('invalid credentials')
+            if user_pass:
+                if user_pass[0] == password:
+                    session['username'] = username
+                    flash('logged in')
+                    return redirect('/')
+            else:
+                flash('invalid credentials')
     return redirect('/login')
