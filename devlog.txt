@@ -1,1 +1,33 @@
-
+amandaT, kishiW, naomiL, niaL -- 2024-01-09 01:06
+* Numerous changes to devlog (based on feedback and other):
+  * New premise:
+    * Progression towards goal (point system)
+      * Worth of flowers depending on time needed to grow flower
+    * Resource (for growing flowers):
+      * Removal of sunlight as resource 
+      * Replacement of coins with magic power
+        * Used to purchase flower seeds
+      * Water -> Infinite
+    * Minigame pivot: Traditional (Tic-tac-toe) -> Brain intensive (Basic Arithmetic)
+    * Can pick flowers after fully grown, moving to profile
+  * Page Infrastructure:
+    * Separation of garden and minigame pages
+      * Initial game page housed every part of game
+    * Addition of shop page to buy seeds
+    * Merging of registeration and login functionalities into one page
+    * Profile has more information:
+      * Fully grown flowers removed from garden displayed here
+      * Information on flower type and value (point-wise)
+  * Game Functionality
+    * Grid system interaction enacted through hover selections
+  * Database Changes
+    * Addition of profile and seeds
+    * Renaming
+      * resources -> stats
+      * personal_flowers -> garden
+  * Map Changes
+    * Site map reflects changes made to page infrastructure
+    * Addition of Javascript to Component Map
+  * Opened consideration of future API incorporation for minigames
+  * More detailed task breakdown among devos
+* Updated README.md to reflect new project description
