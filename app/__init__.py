@@ -6,8 +6,9 @@
 
 # Imports
 import os
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, flash
 from database import register_user, login_user, init_db, logout_user
+from methods import rand_addition
 
 # Session
 app = Flask(__name__)
@@ -36,6 +37,25 @@ def login():
         else:
             flash('form error')
     return render_template('login.html')
+
+@app.route('/game', methods=['GET', 'POST'])
+def game():
+    if 'username' not in session:
+        return redirect('/login')
+    if request.method == 'POST':
+        flash('post')
+        eq_info = request.form.get('eq_info')
+        eq_info.split(',')
+        print("info", eq_info)
+        eq1 = eq_info[0]
+        eq2 = eq_info[1]
+        eq3 = eq_info[2]
+        print("eq", eq1, eq2, eq3)
+        return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
+    eq1 = rand_addition()
+    eq2 = rand_addition()
+    eq3 = rand_addition()
+    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
 
 # Run
 if __name__ == "__main__":
