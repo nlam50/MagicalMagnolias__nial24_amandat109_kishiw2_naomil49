@@ -24,7 +24,7 @@
     {% endwith %}
 
     This is the homepage.
-    
+
     <br><br>
 
     {% if session['username'] %}
@@ -36,6 +36,8 @@
     <form action="/login" method="POST">
       <input type="submit" name="logout" value="Log out">
     </form>
+
+    <script src="/static/js/script.js"></script>
 
   </body>
 </html>
