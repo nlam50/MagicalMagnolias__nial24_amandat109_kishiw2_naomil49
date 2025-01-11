@@ -37,6 +37,14 @@ def login():
             flash('form error')
     return render_template('login.html')
 
+@app.route('/game', methods=['GET', 'POST'])
+def game():
+    # Arithmetic game
+    # Select random game (+, -, *) -> two random numbers (1,20?) -> generate equation -> display info -> user types in answer
+    # game = random_game()
+
+    return render_template('game.html')
+
 # Run
 if __name__ == "__main__":
     app.debug = True
