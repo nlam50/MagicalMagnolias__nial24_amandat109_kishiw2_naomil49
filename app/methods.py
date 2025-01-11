@@ -32,11 +32,13 @@ def game_function():
     # get prior equation info
     eq_info = list_string(request.form.get('eq_info'))
     eq1, eq2, eq3 = eq_info[0], eq_info[1], eq_info[2]
-    ans1, ans2, ans3 = int(request.form.get('eq1_ans')), int(request.form.get('eq2_ans')), int(request.form.get('eq3_ans'))
+    ans1, ans2, ans3 = request.form.get('eq1_ans'), request.form.get('eq2_ans'), request.form.get('eq3_ans')
 
     if not ans1 or not ans2 or not ans3:
         flash('fill out all fields!')
         return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
+
+    ans1, ans2, ans3 = int(ans1), int(ans2), int(ans3)
 
     # logic
     a = [
@@ -44,7 +46,7 @@ def game_function():
         (ans2 == eq2[2]),
         (ans3 == eq3[2])
     ]
-    print('a', a)
+    # print('a', a)
     if a != [True, True, True]:
         flash("incorrect!")
     else:
