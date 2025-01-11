@@ -18,10 +18,12 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
           {% for message in messages %}
-          <p id="flashes">{{ message }}</p>
+          <i>message: {{ message }}</i>
           {% endfor %}
       {% endif %}
     {% endwith %}
+
+    <br><br>
 
     This is the homepage.
 
@@ -30,6 +32,10 @@
     {% if session['username'] %}
       user in session: {{ session['username'] }}
     {% endif %}
+
+    <br><br>
+
+    <a href="{{ url_for('game') }}">Game</a>
 
     <br><br>
 

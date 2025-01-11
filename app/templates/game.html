@@ -10,18 +10,23 @@
 
 <html>
   <head>
-    <title>Home</title>
+    <title>Game</title>
   </head>
 
   <body>
     <!-- flash messages -->
+    <i> 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
+          message:
           {% for message in messages %}
-          <p id="flashes">{{ message }}</p>
+            <br>{{ message }}
           {% endfor %}
       {% endif %}
     {% endwith %}
+    </i>
+
+    <br><br>
 
     This is the game.
 
@@ -32,11 +37,11 @@
     equation 3: {{ eq3 }} <br><br>
 
     <form action="{{ url_for('game') }}" method="POST">
-      {{ eq1[0] }} + {{ eq1[1] }} = <input type="text" name="eq1_ans" > <br><br>
-      {{ eq2[0] }} + {{ eq2[1] }} = <input type="text" name="eq1_ans"> <br><br>
-      {{ eq3[0] }} + {{ eq3[1] }} = <input type="text" name="eq1_ans"> <br><br>
-      <input type="hidden" name="eq_info" value="{{ eq1 }}, {{ eq2 }}, {{ eq3 }}">
-      <input type="submit" name="POST" value="send post">
+      {{ eq1[0] }} + {{ eq1[1] }} = <input type="number" name="eq1_ans" > <br><br>
+      {{ eq2[0] }} + {{ eq2[1] }} = <input type="number" name="eq2_ans"> <br><br>
+      {{ eq3[0] }} + {{ eq3[1] }} = <input type="number" name="eq3_ans"> <br><br>
+      <input type="hidden" name="eq_info" value="{{ eq1 }}###{{ eq2 }}###{{ eq3 }}">
+      <input type="submit" name="POST" value="Submit">
     </form>
 
   </body>

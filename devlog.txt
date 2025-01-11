@@ -38,3 +38,10 @@ naomiL, amandaT -- 2025-01-09 10:59
 * set up html necessary information (login and register forms)
 * created requirements.txt
 * added keys readme, install guide, and launch codes
+
+naomiL -- 2025-01-09 15:12
+* login, logout, register functionality
+
+naomiL -- 2025-01-11 12:43
+* backend for game/page reflects inputs -> game works!
+* it looks ugly need to add styling
