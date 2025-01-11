@@ -6,8 +6,10 @@
 
 # Imports
 import os, sqlite3
+import csv
 from flask import request, redirect, render_template, flash, session
 
+# database initialization
 
 def flowerbase(): 
     try:
@@ -22,8 +24,8 @@ def flowerbase():
                 img = info[5]
     except sqlite3.IntegrityError:
         flash('Database Error')
+
         
-# database initialization
 def init_db():
     """initialize db if none exists"""
     if not os.path.exists('user_info.db'):
@@ -89,3 +91,4 @@ def logout_user():
     flash('logged out')
     return redirect('/login')
         
+

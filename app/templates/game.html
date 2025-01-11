@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <!--
   Nia Lam, Amanda Tan, Naomi Lai, Kishi Wijaya
   Magical Magnolias
@@ -5,3 +7,37 @@
   P02: Makers Makin' It, Act I
   2025-01-15
 -->
+
+<html>
+  <head>
+    <title>Home</title>
+  </head>
+
+  <body>
+    <!-- flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <p id="flashes">{{ message }}</p>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    This is the game.
+
+    <br><br>
+
+    equation 1: {{ eq1 }} <br><br>
+    equation 2: {{ eq2 }} <br><br>
+    equation 3: {{ eq3 }} <br><br>
+
+    <form action="{{ url_for('game') }}" method="POST">
+      {{ eq1[0] }} + {{ eq1[1] }} = <input type="text" name="eq1_ans" > <br><br>
+      {{ eq2[0] }} + {{ eq2[1] }} = <input type="text" name="eq1_ans"> <br><br>
+      {{ eq3[0] }} + {{ eq3[1] }} = <input type="text" name="eq1_ans"> <br><br>
+      <input type="hidden" name="eq_info" value="{{ eq1 }}, {{ eq2 }}, {{ eq3 }}">
+      <input type="submit" name="POST" value="send post">
+    </form>
+
+  </body>
+</html>
