@@ -1,0 +1,26 @@
+nav{
+    /* background-color: red; */
+    padding: 10px;
+    font-size:medium;
+}
+
+body{
+    background-color: rgb(224, 240, 255);
+    font-family: monospace;
+    text-align: center;
+}
+
+a:not(.nav){
+    background-color: transparent !important;
+}
+
+.well{
+    background-color: aliceblue;
+    border-width: 0px;
+}
+
+.alert{
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}

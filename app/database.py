@@ -26,8 +26,8 @@ def flowerbase():
 # database initialization
 def init_db():
     """initialize db if none exists"""
-    if not os.path.exists('user_info.db'):
-        conn = sqlite3.connect('user_info.db')
+    if not os.path.exists('magnolia.db'):
+        conn = sqlite3.connect('magnolia.db')
         cursor = conn.cursor()
         # User table
         cursor.execute('''
@@ -40,6 +40,7 @@ def init_db():
         conn.commit()
         conn.close()
 
+# User
 def register_user():
     username = request.form.get('username')
     password = request.form.get('password')
@@ -51,7 +52,7 @@ def register_user():
         flash('passwords dont match')
     else:
         try:
-            with sqlite3.connect('user_info.db') as conn:
+            with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
                 conn.commit()
@@ -68,7 +69,7 @@ def login_user():
         flash('fill all fields')
         return redirect('/login')
     else:
-        with sqlite3.connect('user_info.db') as conn:
+        with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             # q = 'SELECT password FROM users WHERE username = ? (' + username + ',)'
             # cursor.execute(q)
@@ -89,3 +90,6 @@ def logout_user():
     flash('logged out')
     return redirect('/login')
         
+# Shop -> access flower db for info
+def flower_info():
+    return [1]

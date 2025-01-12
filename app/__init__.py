@@ -38,6 +38,10 @@ def login():
             flash('form error')
     return render_template('login.html')
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    return logout_user()
+
 @app.route('/game', methods=['GET', 'POST'])
 def game():
     if 'username' not in session:
