@@ -32,8 +32,6 @@ def login():
             return register_user()
         if request.form.get('login'):
             return login_user()
-        if request.form.get('logout'):
-            return logout_user()
         else:
             flash('form error')
     return render_template('login.html')
