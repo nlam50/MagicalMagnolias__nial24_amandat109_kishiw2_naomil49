@@ -9,7 +9,7 @@ import os, sqlite3
 from flask import request, redirect, render_template, flash, session
 
 
-def flowerbase(): 
+def flowerbase():
     try:
         with open('flower.csv') as conn:
             read = csv.reader(conn)
@@ -22,7 +22,7 @@ def flowerbase():
                 img = info[5]
     except sqlite3.IntegrityError:
         flash('Database Error')
-        
+
 # database initialization
 def init_db():
     """initialize db if none exists"""
@@ -35,6 +35,28 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS stats (
+                user TEXT UNIQUE NOT NULL,
+                magic power INTEGER NOT NULL,
+                flower score INTEGER NOT NULL
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS profile (
+                flower_type TEXT UNIQUE NOT NULL,
+                user TEXT UNIQUE NOT NULL,
+                max_growth INTEGER NOT NULL
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS seeds (
+                user TEXT UNIQUE NOT NULL,
+                flower_id INTEGER UNIQUE NOT NULL,
+                quantity INTEGER NOT NULL
             )
         ''')
         conn.commit()
@@ -89,7 +111,7 @@ def logout_user():
     session.pop('username',)
     flash('logged out')
     return redirect('/login')
-        
+
 # Shop -> access flower db for info
 def flower_info():
     return [1]
