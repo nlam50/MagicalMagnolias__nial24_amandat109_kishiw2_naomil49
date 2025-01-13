@@ -50,3 +50,8 @@ amandaT -- 2025-01-12 19:54
 * created remaining database structure for:
   * stats, profile, seeds
 * flower_base table does not exist as database table because already exists as csv file
+
+kishiW -- 2025-01-12 23:01
+*created database structures for flower_base and garden
+*created database for flower_base and stats
+*started rest of databases
