@@ -51,6 +51,10 @@ def game():
     eq1, eq2, eq3 = rand_addition(), rand_addition(), rand_addition()
     return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3) 
 
+@app.route('/shop')
+def shop():
+    return render_template('shop.html')
+
 # Run
 if __name__ == "__main__":
     app.debug = True

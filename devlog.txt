@@ -55,3 +55,8 @@ kishiW -- 2025-01-12 23:01
 *created database structures for flower_base and garden
 *created database for flower_base and stats
 *started rest of databases
+
+naomiL -- 2025-01-13 00:31
+* html for shop
+* adjusted css for bootstrap 4 (navbar, card)
+* increase flower score / minigame

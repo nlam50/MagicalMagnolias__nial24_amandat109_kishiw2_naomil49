@@ -204,11 +204,11 @@ def flower_info():
     return [1]
 
 # Game
-def inc_mp():
+def inc_mp(n):
     username = session['username']
     try:
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
-            cursor.execute('UPDATE stats SET magic power = magic power + ? WHERE user = ?', (1, username))
+            cursor.execute('UPDATE stats SET magicpower = magicpower + ? WHERE user = ?', (n, username))
     except sqlite3.IntegrityError:
         flash('error')

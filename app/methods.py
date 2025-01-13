@@ -52,5 +52,5 @@ def game_function():
         flash("incorrect!")
     else:
         flash("correct!")
-        inc_mp()
+        inc_mp(1)
     return redirect('/game')

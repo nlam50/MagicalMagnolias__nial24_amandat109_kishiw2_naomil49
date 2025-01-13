@@ -1,5 +1,5 @@
-nav{
-    padding: 10px;
+nav.navbar{
+    padding: 20px;
     font-size:large;
 }
 
@@ -13,9 +13,10 @@ a:not(.nav){
     background-color: transparent !important;
 }
 
-.well{
+.card{
     background-color: aliceblue;
     border-width: 0px;
+    padding: 15px;
 }
 
 .alert{
