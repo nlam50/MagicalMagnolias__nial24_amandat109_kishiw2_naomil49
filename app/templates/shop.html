@@ -22,6 +22,7 @@ P02: Makers Makin' It, Act I
         <!-- css -->
         <link rel="stylesheet" href="/static/css/custom.css">
         <link rel="stylesheet" href="/static/css/shop.css">
+        <script src="/static/js/script.js"></script>
     </head>
 
     <body>
@@ -29,7 +30,7 @@ P02: Makers Makin' It, Act I
         <div class="container-fluid">
             <nav class="navbar">
                 <ul class="nav">
-                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li> 
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
                     <li class="nav-item"> <p class="navbar-text"> Flower power (show currency here) </p> </li>
                 </ul>
                 <ul class="nav">
@@ -42,10 +43,10 @@ P02: Makers Makin' It, Act I
 
         <div class="container">
 
-            <!-- header/info --> 
-            <h1> shop </h1> 
+            <!-- header/info -->
+            <h1> shop </h1>
 
-            <div class="card">        
+            <div class="card">
                 exchange magic power for seeds!
             </div>
             <!------>
@@ -66,19 +67,18 @@ P02: Makers Makin' It, Act I
             <br>
 
             <!-- shop -->
-            {% set id = '1' %}
+            {% set id = 7 %}
             {% set flower_type = 'tulip' %}
             {% set cost = '4' %}
             {% set max_growth = '2' %}
-            {% set n = 7 %}
 
             <!-- seed info -->
-            {% for i in range(n) %}
+            {% for i in range(id) %}
                 {% if (i%3) == 0 %}
                 <div  class="row">
-                {% endif %}                        
+                {% endif %}
                     <div class="col-4">
-                        <div class = "cell">
+                        <div class = "card" id="{{ i }}">
                             <h3> {{ flower_type }} </h3>
                             cost: {{ cost }} <br>
                             days to grow: {{ max_growth }}
@@ -89,6 +89,6 @@ P02: Makers Makin' It, Act I
                 {% endif %}
             {% endfor %}
             <!----->
-        </div>  
+        </div>
     </body>
 </html>

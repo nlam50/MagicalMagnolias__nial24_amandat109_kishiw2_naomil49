@@ -29,7 +29,7 @@
       <div class="container-fluid">
         <nav class="navbar">
             <ul class="nav">
-                <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li> 
+                <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
                 <li class="nav-item"> <p class="navbar-text"> Flower power (show currency here) </p> </li>
             </ul>
             <ul class="nav">
@@ -41,11 +41,11 @@
       <!------>
 
     <div class="container">
-    
-      <!-- header/info --> 
-      <h1> minigame </h1> 
 
-      <div class="card">        
+      <!-- header/info -->
+      <h1> minigame </h1>
+
+      <div class="card">
         solve equations for magic power!
       </div>
       <!------>
@@ -54,6 +54,7 @@
       {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
+            <br>
               <div class="alert alert-info">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                   {{ message }}
@@ -62,8 +63,6 @@
         {% endif %}
       {% endwith %}
       <!------>
-
-      <br>
 
       <!-- game -->
       <div class="game">
@@ -76,6 +75,6 @@
         </form>
       </div>
       <!----->
-    </div>  
+    </div>
   </body>
 </html>
