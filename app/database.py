@@ -46,6 +46,19 @@ def init_db():
             flower score INTEGER NOT NULL
         )
     ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS garden (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user TEXT UNIQUE NOT NULL,
+            flower_type TEXT UNIQUE NOT NULL,
+            days_watered INTEGER INTEGER NOT NULL,
+            grid_row INTEGER NOT NULL,
+            grid_col INTEGER NOT NULL,
+            max_growth INTEGER NOT NULL
+        )
+    ''')   
+    
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS profile (
             flower_type TEXT UNIQUE NOT NULL,
@@ -90,8 +103,18 @@ def flowerbase():
             flash('Database Error')
     else:
         print("database exists")
-      
+        
+def stats(user, magicpower, flowerscore):
+    try:
+        conn = database_connect()
+            cursor = conn.cursor()
+            cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore WHERE user = ?',
+                           (magicpower, flowerscore, user))
+            conn.commit()
+    except sqlite3.IntegrityError:
+        print('Database Error')
 
+stats()
 
 # User
 def register_user():
