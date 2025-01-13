@@ -18,8 +18,7 @@ def init_db():
     """initialize db if none exists"""
     conn = sqlite3.connect('magnolia.db')
     cursor = conn.cursor()
-        # User table
-        
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS flower_base (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -107,14 +106,14 @@ def flowerbase():
 def stats(user, magicpower, flowerscore):
     try:
         conn = database_connect()
-            cursor = conn.cursor()
-            cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore WHERE user = ?',
-                           (magicpower, flowerscore, user))
-            conn.commit()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore WHERE user = ?',
+                        (magicpower, flowerscore, user))
+        conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
 
-stats()
+# stats()
 
 # User
 def register_user():
@@ -169,3 +168,13 @@ def logout_user():
 # Shop -> access flower db for info
 def flower_info():
     return [1]
+
+# Game
+def inc_mp():
+    username = session['username']
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute('UPDATE stats SET magic power = magic power + ? WHERE user = ?', (1, username))
+    except sqlite3.IntegrityError:
+        flash('error')

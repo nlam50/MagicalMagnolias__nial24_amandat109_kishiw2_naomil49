@@ -6,6 +6,7 @@
 
 import random
 from flask import request, redirect, flash, render_template
+from database import inc_mp
 
 def rand_addition():
     n1 = random.randint(10, 50)
@@ -51,4 +52,5 @@ def game_function():
         flash("incorrect!")
     else:
         flash("correct!")
+        inc_mp()
     return redirect('/game')
