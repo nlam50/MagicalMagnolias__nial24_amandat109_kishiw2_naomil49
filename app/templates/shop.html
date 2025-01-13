@@ -75,13 +75,14 @@ P02: Makers Makin' It, Act I
             <!-- seed info -->
             {% for i in range(id) %}
                 {% if (i%3) == 0 %}
-                <div  class="row">
+                    <div  class="row">
                 {% endif %}
                     <div class="col-4">
-                        <div class = "card" id="{{ i }}">
+                        <div class = "card">
                             <h3> {{ flower_type }} </h3>
                             cost: {{ cost }} <br>
                             days to grow: {{ max_growth }}
+                            <button onclick="purchase('{{ i}}')";> Purchase</button>
                         </div>
                     </div>
                 {% if (i%3) == 2 %}

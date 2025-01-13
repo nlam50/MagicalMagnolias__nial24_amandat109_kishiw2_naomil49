@@ -4,6 +4,6 @@
 // var s = document.getElementById("0");
 // s.addEventListener("click", purchase());
 //
-// var purchase = function() {
-//   console.log("purchase");
-// }
+var purchase = function(i) {
+  console.log(i);
+}

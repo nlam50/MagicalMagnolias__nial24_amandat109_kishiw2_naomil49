@@ -159,7 +159,7 @@ def garden_edit(user, r, c, ID, days_watered):
         print('Database Error')
     print("gardenrun")
 
-garden("who")
+# garden("who")
 
 
 #Profile
