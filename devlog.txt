@@ -45,3 +45,8 @@ naomiL -- 2025-01-09 15:12
 naomiL -- 2025-01-11 12:43
 * backend for game/page reflects inputs -> game works!
 * it looks ugly need to add styling
+
+amandaT -- 2025-01-12 19:54
+* created remaining database structure for:
+  * stats, profile, seeds
+* flower_base table does not exist as database table because already exists as csv file
