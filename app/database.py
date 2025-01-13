@@ -5,62 +5,93 @@
 # 2025-01-15
 
 # Imports
-import os, sqlite3
-from flask import request, redirect, render_template, flash, session
+import sqlite3, os, csv
+from flask import Flask, request, render_template, redirect, url_for, flash, session
 
 
-def flowerbase():
-    try:
-        with open('flower.csv') as conn:
-            read = csv.reader(conn)
-            for info in read:
-                ID = info[0]
-                flower_type = info[1]
-                cost = info[2]
-                max_growth = info[3]
-                water_req = info[4]
-                img = info[5]
-    except sqlite3.IntegrityError:
-        flash('Database Error')
+app = Flask(__name__)
+app.secret_key = os.urandom(32)
 
 # database initialization
+
 def init_db():
     """initialize db if none exists"""
-    if not os.path.exists('magnolia.db'):
-        conn = sqlite3.connect('magnolia.db')
-        cursor = conn.cursor()
+    conn = sqlite3.connect('magnolia.db')
+    cursor = conn.cursor()
         # User table
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL
-            )
-        ''')
+        
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS flower_base (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            flower_type TEXT UNIQUE NOT NULL,
+            cost INTEGER INTEGER NOT NULL,
+            max_growth INTEGER NOT NULL,
+            water_req INTEGER NOT NULL,
+            img TEXT UNIQUE NOT NULL
+        )
+    ''')        
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
+        )
+    ''')
 
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS stats (
-                user TEXT UNIQUE NOT NULL,
-                magic power INTEGER NOT NULL,
-                flower score INTEGER NOT NULL
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS profile (
-                flower_type TEXT UNIQUE NOT NULL,
-                user TEXT UNIQUE NOT NULL,
-                max_growth INTEGER NOT NULL
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS seeds (
-                user TEXT UNIQUE NOT NULL,
-                flower_id INTEGER UNIQUE NOT NULL,
-                quantity INTEGER NOT NULL
-            )
-        ''')
-        conn.commit()
-        conn.close()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS stats (
+            user TEXT UNIQUE NOT NULL,
+            magic power INTEGER NOT NULL,
+            flower score INTEGER NOT NULL
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS profile (
+            flower_type TEXT UNIQUE NOT NULL,
+            user TEXT UNIQUE NOT NULL,
+            max_growth INTEGER NOT NULL
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS seeds (
+            user TEXT UNIQUE NOT NULL,
+            flower_id INTEGER UNIQUE NOT NULL,
+            quantity INTEGER NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def database_connect():
+    if not os.path.exists('magnolia.db'):
+        init_db()
+    conn = sqlite3.connect('magnolia.db')
+    return conn
+
+#Flower
+def flowerbase():
+    if not os.path.exists('magnolia.db'):
+        try:
+            conn = database_connect()
+            with open('flower.csv') as csvfile:
+                readn = csv.reader(csvfile)
+                cursor = conn.cursor()
+                for info in readn:
+                    ID = info[0]
+                    flower_type = info[1]
+                    cost = info[2]
+                    max_growth = info[3]
+                    water_req = info[4]
+                    img = info[5]
+                    cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img) VALUES (?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img))
+                conn.commit()
+        except sqlite3.IntegrityError:
+            flash('Database Error')
+    else:
+        print("database exists")
+      
+
 
 # User
 def register_user():

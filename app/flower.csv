@@ -1,4 +1,3 @@
-id,flower_type,cost,max_growth,water_req,image
 1,Iris,1,3,2,iris.png
 2,Tulip,3,5,3,tulip.png
 3,Sunflower,5,10,7,sunflower.png
