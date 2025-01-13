@@ -42,8 +42,8 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS stats (
             user TEXT UNIQUE NOT NULL,
-            magic power INTEGER NOT NULL,
-            flower score INTEGER NOT NULL
+            magicpower INTEGER NOT NULL,
+            flowerscore INTEGER NOT NULL
         )
     ''')
     
@@ -103,18 +103,52 @@ def flowerbase():
             flash('Database Error')
     else:
         print("database exists")
-        
+ 
+ #Stats
 def stats(user, magicpower, flowerscore):
     try:
         conn = database_connect()
-            cursor = conn.cursor()
-            cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore WHERE user = ?',
-                           (magicpower, flowerscore, user))
-            conn.commit()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO stats (user, magicpower, flowerscore) VALUES (?, ?, ?)', (user, magicpower, flowerscore))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print('Database Error')
+ 
+def stats_edit(user, magicpower, flowerscore):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore = ? WHERE user = ?', (magicpower, flowerscore, user))
+        conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
 
-stats()
+
+#Garden
+
+
+#Profile
+# def profile():
+#     if not os.path.exists('magnolia.db'):
+#         try:
+#             conn = database_connect()
+#             with open('profile.csv') as csvfile:
+#                 readn = csv.reader(csvfile)
+#                 cursor = conn.cursor()
+#                 for info in readn:
+#                     flower_type = info[0]
+#                     user = info[1]
+#                     max_growth = info[2]
+#                     max_growth = info[3]
+#                     water_req = info[4]
+#                     img = info[5]
+#                 cursor.execute('INSERT INTO profile (flower_type, user, max_growth) VALUES (?, ?, ?)', (flower_type, user, max_growth))
+#                 conn.commit()
+#         except sqlite3.IntegrityError:
+#             flash('Database Error')
+#     else:
+#         print("database exists")
+ 
 
 # User
 def register_user():
