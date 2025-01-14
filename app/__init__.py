@@ -40,6 +40,10 @@ def login():
 def logout():
     return logout_user()
 
+@app.route('/garden')
+def garden():
+    return render_template('garden.html')
+
 @app.route('/game', methods=['GET', 'POST'])
 def game():
     if 'username' not in session:
@@ -49,7 +53,7 @@ def game():
         return game_function()
         # return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
     eq1, eq2, eq3 = rand_addition(), rand_addition(), rand_addition()
-    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3) 
+    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
 
 @app.route('/shop')
 def shop():
