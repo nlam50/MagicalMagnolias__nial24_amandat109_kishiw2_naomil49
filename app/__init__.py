@@ -8,7 +8,7 @@
 import os
 from flask import Flask, render_template, redirect, request, session, flash
 from database import register_user, login_user, init_db, logout_user
-from methods import rand_addition, list_string, game_function
+from methods import rand_addition, list_string, game_function, purchase
 
 # Session
 app = Flask(__name__)
@@ -49,10 +49,13 @@ def game():
         return game_function()
         # return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
     eq1, eq2, eq3 = rand_addition(), rand_addition(), rand_addition()
-    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3) 
+    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
 
-@app.route('/shop')
+@app.route('/shop', methods=['GET', 'POST'])
 def shop():
+    if request.method == 'POST':
+        # purchase_info = request.form.get('purchase_info')
+        return purchase()
     return render_template('shop.html')
 
 # Run

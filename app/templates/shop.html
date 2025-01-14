@@ -22,7 +22,6 @@ P02: Makers Makin' It, Act I
         <!-- css -->
         <link rel="stylesheet" href="/static/css/custom.css">
         <link rel="stylesheet" href="/static/css/shop.css">
-        <script src="/static/js/script.js"></script>
     </head>
 
     <body>
@@ -79,10 +78,13 @@ P02: Makers Makin' It, Act I
                 {% endif %}
                     <div class="col-4">
                         <div class = "card">
-                            <h3> {{ flower_type }} </h3>
-                            cost: {{ cost }} <br>
-                            days to grow: {{ max_growth }}
-                            <button onclick="purchase('{{ i}}')";> Purchase</button>
+                          <h3> {{ flower_type }} </h3>
+                          cost: {{ cost }} <br>
+                          days to grow: {{ max_growth }}
+                          <form action="{{ url_for('shop') }}" method="POST">
+                            <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
+                            <input type="submit" value="Purchase">
+                          </form>
                         </div>
                     </div>
                 {% if (i%3) == 2 %}

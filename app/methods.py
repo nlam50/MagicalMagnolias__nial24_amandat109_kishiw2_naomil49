@@ -14,7 +14,7 @@ def rand_addition():
     sum = n1 + n2
     return[n1, n2, sum]
 
-# turns string into lists of numbers
+# turns string into lists of numbers, '['10, '4', '6']' -> [10, 4, 6]
 def list_string(n):
     n = n.split('###')
     li = []
@@ -54,3 +54,9 @@ def game_function():
         flash("correct!")
         inc_mp(1)
     return redirect('/game')
+
+def purchase():
+    purchase_info = request.form.get('purchase_info')
+    purchase_info = purchase_info.split('###')
+    print(purchase_info)
+    return redirect('shop')

@@ -17,10 +17,16 @@ a:not(.nav){
     background-color: aliceblue;
     border-width: 0px;
     padding: 15px;
+    border-radius: 10px;
 }
 
 .alert{
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
+}
+
+.row{
+    margin-top: 15px;
+    margin-bottom: 15px;
 }

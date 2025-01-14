@@ -1,8 +1,4 @@
-form{
-    font-size: large;
-}
-
-.game{    
+.game{
     background-color: aliceblue;
     width: fit-content;
     max-width: fit-content;
@@ -11,4 +7,3 @@ form{
     padding: 20px;
     border-radius: 20px;
 }
-
