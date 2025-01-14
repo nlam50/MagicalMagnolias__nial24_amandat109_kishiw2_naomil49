@@ -160,8 +160,6 @@ def garden_edit(user, r, c, ID, days_watered):
         print('Database Error')
     print("gardenrun")
 
-garden_edit("who", 4, 1, 1, 3)
-
 
 #Profile
 def profile(user, flower_type, max_growth):
