@@ -82,8 +82,9 @@ def database_connect():
     return conn
 
 #Flower
-def flowerbase(user):
+def flowerbase():
     if not os.path.exists('magnolia.db'):
+        print("wa")
         try:
             conn = database_connect()
             with open('flower.csv') as csvfile:
@@ -97,15 +98,12 @@ def flowerbase(user):
                     water_req = info[4]
                     img = info[5]
                     cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img) VALUES (?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img))
-                    cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
                 conn.commit()
         except sqlite3.IntegrityError:
             flash('Database Error')
     else:
         print("database exists")
 
-flowerbase("yu")
-        
  
  #Stats
 def stats(user, magicpower, flowerscore):
@@ -168,6 +166,22 @@ def garden_edit(user, r, c, ID, days_watered):
 
 
 #Seeds
+
+def seeds(user):
+    try:
+        conn = database_connect()
+        with open('flower.csv') as csvfile:
+            readn = csv.reader(csvfile)
+            cursor = conn.cursor()
+            for info in readn:
+                ID = info[0]
+                cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
+            conn.commit()
+    except sqlite3.IntegrityError:
+            flash('Database Error')
+    else:
+        print("database exists")
+        
 def seeds_edit(user, flower_id, quantity):
     try:
         conn = database_connect()

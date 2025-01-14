@@ -60,3 +60,6 @@ naomiL -- 2025-01-13 00:31
 * html for shop
 * adjusted css for bootstrap 4 (navbar, card)
 * increase flower score / minigame
+
+kishiW -- 2025-01-14 10:47
+* finished databases
