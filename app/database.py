@@ -98,12 +98,13 @@ def flowerbase(user):
                     img = info[5]
                     cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img) VALUES (?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img))
                     cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
-                    print("wa")
                 conn.commit()
         except sqlite3.IntegrityError:
             flash('Database Error')
     else:
         print("database exists")
+
+flowerbase("yu")
         
  
  #Stats
@@ -137,8 +138,7 @@ def garden(user):
         conn.commit()
     except sqlite3.IntegrityError:
         flash('Database Error')
-    print("gardenrun")
-        
+
 def garden_add(user, r, c, ID, flower_type, max_growth):
     try:
         conn = database_connect()
@@ -147,8 +147,15 @@ def garden_add(user, r, c, ID, flower_type, max_growth):
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
-    print("gardenrun")
-
+        
+def garden_remove(user, r, c):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE garden SET id = ? AND flower_type = ? AND max_growth = ? AND days_watered = ? WHERE user = ? AND grid_row = ? AND grid_col = ?', (0, "none", 0, 0, user, r, c))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print('Database Error')
         
 def garden_edit(user, r, c, ID, days_watered):
     try:
@@ -158,8 +165,18 @@ def garden_edit(user, r, c, ID, days_watered):
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
-    print("gardenrun")
 
+
+#Seeds
+def seeds_edit(user, flower_id, quantity):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity, user, flower_id))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print('Database Error')
+    print("sed")
 
 #Profile
 def profile(user, flower_type, max_growth):
