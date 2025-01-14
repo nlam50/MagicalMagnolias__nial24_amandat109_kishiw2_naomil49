@@ -40,6 +40,10 @@ def login():
 def logout():
     return logout_user()
 
+@app.route('/garden')
+def garden():
+    return render_template('garden.html')
+
 @app.route('/game', methods=['GET', 'POST'])
 def game():
     if 'username' not in session:
