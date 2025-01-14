@@ -48,8 +48,8 @@ def init_db():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS garden (
-            user TEXT UNIQUE NOT NULL,
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user TEXT NOT NULL,
+            id INTEGER NOT NULL,
             flower_type TEXT  NOT NULL,
             days_watered INTEGER NOT NULL,
             grid_row INTEGER NOT NULL,
@@ -67,8 +67,8 @@ def init_db():
     ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS seeds (
-            user TEXT UNIQUE NOT NULL,
-            flower_id INTEGER UNIQUE NOT NULL,
+            user TEXT NOT NULL,
+            flower_id INTEGER NOT NULL,
             quantity INTEGER NOT NULL
         )
     ''')
@@ -97,7 +97,8 @@ def flowerbase(user):
                     water_req = info[4]
                     img = info[5]
                     cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img) VALUES (?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img))
-                    #cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
+                    cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
+                    print("wa")
                 conn.commit()
         except sqlite3.IntegrityError:
             flash('Database Error')
@@ -132,7 +133,7 @@ def garden(user):
         for r in range(6):
             for c in range(6):
                 cursor = conn.cursor()
-                cursor.execute('INSERT INTO profile (user, id, flower_type, days_watered, grid_row, grid_col, max_growth) VALUES (?, ?, ?, ?, ?, ?, ?)', (user, 0, "none", 0, r, c, 0))
+                cursor.execute('INSERT INTO garden (user, id, flower_type, days_watered, grid_row, grid_col, max_growth) VALUES (?, ?, ?, ?, ?, ?, ?)', (user, 0, "none", 0, r, c, 0))
         conn.commit()
     except sqlite3.IntegrityError:
         flash('Database Error')
@@ -142,7 +143,7 @@ def garden_add(user, r, c, ID, flower_type, max_growth):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE stats SET id = ? AND flower_type = ? AND max_growth = ? WHERE user = ? AND r = ? AND c = ?', (ID, flower_type, max_growth, user, r, c))
+        cursor.execute('UPDATE garden SET id = ? AND flower_type = ? AND max_growth = ? WHERE user = ? AND grid_row = ? AND grid_col = ?', (ID, flower_type, max_growth, user, r, c))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
@@ -153,13 +154,13 @@ def garden_edit(user, r, c, ID, days_watered):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE stats SET days_watered = ? WHERE user = ? AND r = ? AND c = ? AND ID = ?', (days_watered, user, r, c, ID))
+        cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND grid_row = ? AND grid_col = ? AND id = ?', (days_watered, user, r, c, ID))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
     print("gardenrun")
 
-# garden("who")
+garden_edit("who", 4, 1, 1, 3)
 
 
 #Profile
