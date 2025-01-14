@@ -63,3 +63,9 @@ naomiL -- 2025-01-13 00:31
 
 kishiW -- 2025-01-14 10:47
 * finished databases
+
+naomiL -- 2025-01-14 13:46
+* styling for home page + button styling for shop
+* database responsive to game (magic power increases)
+* methods for purchasing flowers (database not yet involved)
+* need to fix alert spacing (home, game, shop)

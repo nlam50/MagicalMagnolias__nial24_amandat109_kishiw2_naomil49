@@ -54,9 +54,3 @@ def game_function():
         flash("correct!")
         inc_mp(1)
     return redirect('/game')
-
-def purchase():
-    purchase_info = request.form.get('purchase_info')
-    purchase_info = purchase_info.split('###')
-    print(purchase_info)
-    return redirect('shop')

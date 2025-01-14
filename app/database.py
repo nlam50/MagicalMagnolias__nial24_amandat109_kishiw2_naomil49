@@ -218,6 +218,7 @@ def register_user():
             with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
+                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore) VALUES (?,?,?)', (username,1, 1))
                 conn.commit()
                 flash('registered')
         except sqlite3.IntegrityError:
@@ -255,7 +256,38 @@ def logout_user():
 
 # Shop -> access flower db for info
 def flower_info():
-    return [1]
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            result = cursor.execute('SELECT * FROM flower_base').fetchall()
+            return result
+    except sqlite3.IntegrityError:
+        flash('error')
+            
+def purchase():
+    purchase_info = request.form.get('purchase_info')
+    purchase_info = list(map(int, purchase_info.split('###')))
+    id = purchase_info[0]
+    cost = purchase_info[1]
+    username = session['username']
+    
+    try: 
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            result = cursor.execute('SELECT magicpower, flowerscore FROM stats WHERE user = ?', (username,)).fetchone()
+            magicpower = result[0]
+            flowerscore = result[1]
+
+            if flowerscore >= id:                
+                if magicpower >= cost:
+                    flash('user can buy')
+                else:
+                    flash('not enough magic power. play minigames to earn more!')
+            else:
+                flash('flower not unlocked')
+    except sqlite3.IntegrityError:
+        flash('error')
+    return redirect('shop')
 
 # Game
 def inc_mp(n):

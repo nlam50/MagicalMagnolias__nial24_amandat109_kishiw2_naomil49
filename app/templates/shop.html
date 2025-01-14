@@ -70,24 +70,34 @@ P02: Makers Makin' It, Act I
             {% set flower_type = 'tulip' %}
             {% set cost = '4' %}
             {% set max_growth = '2' %}
+            {% set len = info|length %}
 
             <!-- seed info -->
-            {% for i in range(id) %}
-                {% if (i%3) == 0 %}
-                    <div  class="row">
+            {% for flower in info %}
+                <!-- variables -->
+                {% set id = flower[0] %}
+                {% set flower_type = flower[1] %}
+                {% set cost = flower[2] %}
+                {% set max_growth = flower[3] %}
+                {% set water_req = flower[4] %}
+                {% set img = flower[5] %}
+                <!---->
+
+                {% if ((id-1)%3) == 0 %}
+                    <div class="row">
                 {% endif %}
                     <div class="col-4">
-                        <div class = "card">
-                          <h3> {{ flower_type }} </h3>
-                          cost: {{ cost }} <br>
-                          days to grow: {{ max_growth }}
-                          <form action="{{ url_for('shop') }}" method="POST">
-                            <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
-                            <input type="submit" value="Purchase">
-                          </form>
+                        <div class="card">
+                            <h4> {{ flower_type }}</h4>
+                            cost: {{ cost }} <br>
+                            days to grow: {{ max_growth }} <br>
+                            <form action="{{ url_for('shop') }}" method="POST">
+                                <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
+                                <input type="submit" value="Purchase">
+                            </form>                            
                         </div>
                     </div>
-                {% if (i%3) == 2 %}
+                {% if ((id-1)%3) == 2 %}
                     </div>
                 {% endif %}
             {% endfor %}
