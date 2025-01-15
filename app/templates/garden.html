@@ -68,6 +68,7 @@ P02: Makers Makin' It, Act I
 
                 {% set id = grid[0] %}
                 {% set flower_type = grid[1] %}
+                {% set img = grid[5] %}
 
                 {% if (id%6) == 1 %}
                     <div  class="row">
@@ -89,8 +90,9 @@ P02: Makers Makin' It, Act I
                                 <!-- options to plant seed if none planted in grid space -->
                                 {% if flower_type != 'none' %}
                                   {% for flower in flower_info %}
+                                    {% set flower_id = flower[0]}
                                     {% set name = flower[1]}
-                                    <button name="flower" value="{{ id }},{{name}}"><img src="/images/{{name}}.png"></button>
+                                    <button name="flower" value="{{ id }},{{flower_id}},{{name}}"><img src="/images/{{img}}"></button>
                                   {% endfor %}
                                 {% endif %}
 

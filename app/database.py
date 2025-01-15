@@ -198,10 +198,11 @@ def seeds(user):
     else:
         print("database exists")
 
-def seeds_edit(user, flower_id, quantity):
+def seeds_use(user, flower_id):
     try:
         conn = database_connect()
         cursor = conn.cursor()
+        quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND id = ?', (user, id)).fetchone()
         cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity, user, flower_id))
         conn.commit()
     except sqlite3.IntegrityError:
@@ -234,7 +235,7 @@ def register_user():
             with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
-                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore) VALUES (?,?,?)', (username,1, 1))
+                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore, day) VALUES (?,?,?)', (username,1, 1, 1))
                 conn.commit()
                 flash('registered')
         except sqlite3.IntegrityError:
