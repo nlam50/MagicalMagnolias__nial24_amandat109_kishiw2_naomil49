@@ -235,7 +235,7 @@ def register_user():
             with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
-                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore, day) VALUES (?,?,?)', (username,1, 1, 1))
+                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore, day) VALUES (?,?,?,?)', (username, 1, 1, 1))
                 conn.commit()
                 flash('registered')
         except sqlite3.IntegrityError:

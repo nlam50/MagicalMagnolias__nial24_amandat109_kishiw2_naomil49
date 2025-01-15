@@ -48,7 +48,7 @@ def garden():
     user = session['username']
     if request.method == 'POST':
         if request.form.get('flower'):
-            data = request.form['flower'].split.strip
+            data = request.form['flower'].split().strip()
             id = data[0]
             flower_id = data[1]
             flower_type = data[2]
