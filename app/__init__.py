@@ -50,8 +50,10 @@ def garden():
         if request.form.get('flower'):
             data = request.form['flower'].split.strip
             id = data[0]
-            flower_type = data[1]
+            flower_id = data[1]
+            flower_type = data[2]
             garden_add(user, id, flower_type)
+            seeds_use(user, flower_id)
         if request.form.get('water'):
             id = request.form['water']
             garden_water(user, id)
