@@ -272,7 +272,7 @@ def logout_user():
     return redirect('/login')
 
 # Shop -> access flower db for info
-def flower_info():
+def get_flower():
     try:
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()

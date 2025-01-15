@@ -90,8 +90,8 @@ P02: Makers Makin' It, Act I
                                 <!-- options to plant seed if none planted in grid space -->
                                 {% if flower_type != 'none' %}
                                   {% for flower in flower_info %}
-                                    {% set flower_id = flower[0]}
-                                    {% set name = flower[1]}
+                                    {% set flower_id = flower[0] %}
+                                    {% set name = flower[1] %}
                                     <button name="flower" value="{{ id }},{{flower_id}},{{name}}"><img src="/images/{{img}}"></button>
                                   {% endfor %}
                                 {% endif %}
