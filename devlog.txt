@@ -69,3 +69,28 @@ naomiL -- 2025-01-14 13:46
 * database responsive to game (magic power increases)
 * methods for purchasing flowers (database not yet involved)
 * need to fix alert spacing (home, game, shop)
+
+amandaT -- 2025-01-15 01:28
+* adjusted styling for garden page
+  * grid spaces touching
+  * dropdown for grid spaces for buttons
+  * adjusted coloring and margins
+* add html to garden page
+  * dropdown has difference options depending on grid space availability
+    * can plant one of seven seeds if no flower
+    * can water or pick flower out of garden if flower
+  * grid spaces show flower image if planted
+  * added form requests to link to flask
+* adjusted database structure
+  * removed grid row/col from "garden" database table
+  * added days_since_watered to garden database table
+  * changed "id" in "garden" database to autoincrement
+* adjusted database functions
+  * created get_garden function to bring garden data for each user to flask
+  * renamed garden_edit to garden_water
+  * renamed garden_remove to garden_pick
+  * -> more specific updates to tables
+  * matched changes with profile(...) function in database.py
+* need to:
+  * test linkage between html and flask/python, likely errors
+  * update seeds database after planting seeds
