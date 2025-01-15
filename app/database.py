@@ -28,8 +28,8 @@ def init_db():
             water_req INTEGER NOT NULL,
             img TEXT UNIQUE NOT NULL
         )
-    ''')        
-    
+    ''')
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,22 +42,22 @@ def init_db():
         CREATE TABLE IF NOT EXISTS stats (
             user TEXT UNIQUE NOT NULL,
             magicpower INTEGER NOT NULL,
-            flowerscore INTEGER NOT NULL
+            flowerscore INTEGER NOT NULL,
+            day INTEGER NOT NULL
         )
     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS garden (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             user TEXT NOT NULL,
-            id INTEGER NOT NULL,
-            flower_type TEXT  NOT NULL,
+            flower_type TEXT NOT NULL,
             days_watered INTEGER NOT NULL,
-            grid_row INTEGER NOT NULL,
-            grid_col INTEGER NOT NULL,
+            day_last_watered INTEGER NOT NULL,
             max_growth INTEGER NOT NULL
         )
-    ''')   
-    
+    ''')
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS profile (
             user TEXT UNIQUE NOT NULL,
@@ -104,7 +104,7 @@ def flowerbase():
     else:
         print("database exists")
 
- 
+
  #Stats
 def stats(user, magicpower, flowerscore):
     try:
@@ -114,7 +114,7 @@ def stats(user, magicpower, flowerscore):
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
- 
+
 def stats_edit(user, magicpower, flowerscore):
     try:
         conn = database_connect()
@@ -132,35 +132,51 @@ def garden(user):
         for r in range(6):
             for c in range(6):
                 cursor = conn.cursor()
-                cursor.execute('INSERT INTO garden (user, id, flower_type, days_watered, grid_row, grid_col, max_growth) VALUES (?, ?, ?, ?, ?, ?, ?)', (user, 0, "none", 0, r, c, 0))
+                cursor.execute('INSERT INTO garden (user, flower_type, days_watered, days_since_watered, max_growth) VALUES (?, ?, ?, ?, ?)', (user, "none", 0, 0, 0))
         conn.commit()
     except sqlite3.IntegrityError:
         flash('Database Error')
 
-def garden_add(user, r, c, ID, flower_type, max_growth):
+def get_garden(user):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE garden SET id = ? AND flower_type = ? AND max_growth = ? WHERE user = ? AND grid_row = ? AND grid_col = ?', (ID, flower_type, max_growth, user, r, c))
+        result = cursor.execute('SELECT * FROM garden WHERE user = ?', (user)).fetchall()
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
+def garden_add(user, ID, flower_type):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        max_growth = cursor.execute('SELECT max_growth FROM flower_base WHERE flower_type = ?', (flower_type)).fetchone()
+        cursor.execute('UPDATE garden SET flower_type = ? AND max_growth = ? WHERE user = ? AND id = ?', (flower_type, max_growth, user, ID))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
-        
-def garden_remove(user, r, c):
+
+def garden_water(user, ID):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE garden SET id = ? AND flower_type = ? AND max_growth = ? AND days_watered = ? WHERE user = ? AND grid_row = ? AND grid_col = ?', (0, "none", 0, 0, user, r, c))
+        days_watered = cursor.execute('SELECT days_watered FROM garden WHERE user = ? AND id = ?', (user, ID)).fetchone()
+        days_since_watered = cursor.execute('SELECT days_since_watered FROM garden WHERE user = ? AND id = ?', (user, ID)).fetchone()
+        max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, ID)).fetchone()
+        if(days_since_watered != 0 and days_watered != max_growth):
+            cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND id = ?', (days_watered + 1, user, ID))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
-        
-def garden_edit(user, r, c, ID, days_watered):
+
+def garden_pick(user, id):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND grid_row = ? AND grid_col = ? AND id = ?', (days_watered, user, r, c, ID))
+        flower_type = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, id)).fetchone()
+        max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id)).fetchone()
+        cursor.execute('UPDATE garden SET flower_type = ? AND days_watered = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
         conn.commit()
+        profile(user, flower_type, max_growth)
     except sqlite3.IntegrityError:
         print('Database Error')
 
@@ -181,7 +197,7 @@ def seeds(user):
             flash('Database Error')
     else:
         print("database exists")
-        
+
 def seeds_edit(user, flower_id, quantity):
     try:
         conn = database_connect()
@@ -263,22 +279,22 @@ def flower_info():
             return result
     except sqlite3.IntegrityError:
         flash('error')
-            
+
 def purchase():
     purchase_info = request.form.get('purchase_info')
     purchase_info = list(map(int, purchase_info.split('###')))
     id = purchase_info[0]
     cost = purchase_info[1]
     username = session['username']
-    
-    try: 
+
+    try:
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             result = cursor.execute('SELECT magicpower, flowerscore FROM stats WHERE user = ?', (username,)).fetchone()
             magicpower = result[0]
             flowerscore = result[1]
 
-            if flowerscore >= id:                
+            if flowerscore >= id:
                 if magicpower >= cost:
                     flash('user can buy')
                 else:

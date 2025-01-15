@@ -63,26 +63,54 @@ P02: Makers Makin' It, Act I
 
             <br>
 
-            <!-- shop -->
-            {% set n = 36 %}
+            <!-- garden info -->
+            {% for grid in garden_info %}
 
-            <!-- seed info -->
-            {% for i in range(n) %}
-                {% if (i%6) == 0 %}
+                {% set id = grid[0] %}
+                {% set flower_type = grid[1] %}
+
+                {% if (id%6) == 1 %}
                     <div  class="row">
-                {% endif %}
-                    <div class="col">
-                        <!-- <div class = "card"> -->
-                            <button>
-                              {image}
+                      {% endif %}
+
+                      <!-- grid space -->
+                          <div class="drop">
+                            <button class="dropbtn">
+
+                              <!-- image of flower in grid if planted -->
+                              {% if flower_type != 'none' %}
+                                <img src="/images/{{flower_type}}.png">
+                              {% endif %}
+
                             </button>
-                        <!-- </div> -->
-                    </div>
-                {% if (i%6) == 5 %}
+                            <div class="dropdown-content">
+                              <form action="/garden/" method="POST">
+
+                                <!-- options to plant seed if none planted in grid space -->
+                                {% if flower_type != 'none' %}
+                                  {% for flower in flower_info %}
+                                    {% set name = flower[1]}
+                                    <button name="flower" value="{{ id }},{{name}}"><img src="/images/{{name}}.png"></button>
+                                  {% endfor %}
+                                {% endif %}
+
+                                <!-- option to water or pick flower in grid space -->
+                                {% if flower_type == 'none' %}
+                                  <button name="water" value="{{ id }}">&#128167;</button>
+                                  <button name="pick" value="{{ id }}">&#128400;</button>
+                                {% endif %}
+
+                              </form>
+                            </div>
+                          </div>
+                      <!-- grid space -->
+
+                      {% if (id%6) == 0 %}
                     </div>
                 {% endif %}
             {% endfor %}
             <!----->
+
         </div>
     </body>
 </html>
