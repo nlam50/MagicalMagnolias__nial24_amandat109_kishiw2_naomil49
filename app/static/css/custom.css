@@ -35,3 +35,9 @@ li.nav-item{
     margin-left: 10px;
     margin-right: 10px;
 }
+
+/* display content horizontally + evenly spaced */
+.horizontal-flex{
+  display: flex;
+  justify-content: space-around;
+}
