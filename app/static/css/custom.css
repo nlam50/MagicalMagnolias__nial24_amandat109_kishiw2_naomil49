@@ -30,3 +30,8 @@ a:not(.nav){
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+li.nav-item{
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -7,7 +7,7 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session, flash
-from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, flower_info, purchase
+from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy
 from methods import rand_addition, list_string, game_function
 
 # Session
@@ -22,7 +22,12 @@ flowerbase()
 def home():
     if 'username' not in session:
         return redirect('/login')
-    return render_template('home.html')
+
+    # Access flower score + magic power
+    user = session['username']
+    fs = flower_score(user)
+    mp = magic_power(user)
+    return render_template('home.html', fs=fs, mp=mp)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,7 +53,7 @@ def garden():
     user = session['username']
     if request.method == 'POST':
         if request.form.get('flower'):
-            data = request.form['flower'].split.strip
+            data = request.form['flower'].split().strip()
             id = data[0]
             flower_id = data[1]
             flower_type = data[2]
@@ -61,8 +66,14 @@ def garden():
             id = request.form['pick']
             garden_water(user, id)
     garden_info = get_garden(user)
-    flower_info = flower_info()
-    return render_template('garden.html', garden_info=garden_info, flower_info=flower_info)
+    print(garden_info)
+    flower_info = get_flower()
+
+    # Access flower score + magic power
+    user = session['username']
+    fs = flower_score(user)
+    mp = magic_power(user)
+    return render_template('garden.html', garden_info=garden_info, flower_info=flower_info, fs=fs, mp=mp)
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
@@ -73,16 +84,27 @@ def game():
         return game_function()
         # return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
     eq1, eq2, eq3 = rand_addition(), rand_addition(), rand_addition()
-    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
+
+    # Access flower score + magic power
+    user = session['username']
+    fs = flower_score(user)
+    mp = magic_power(user)
+    return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3, fs=fs, mp=mp)
 
 @app.route('/shop', methods=['GET', 'POST'])
 def shop():
     if 'username' not in session:
         return redirect('/login')
     if request.method == 'POST':
+        # buy(session['username'], 1)
         return purchase()
-    info = flower_info()
-    return render_template('shop.html', info = info)
+    info = get_flower()
+
+    # Access flower score + magic power
+    user = session['username']
+    fs = flower_score(user)
+    mp = magic_power(user)
+    return render_template('shop.html', info = info, fs=fs, mp=mp)
 
 # Run
 if __name__ == "__main__":

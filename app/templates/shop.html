@@ -30,10 +30,11 @@ P02: Makers Makin' It, Act I
             <nav class="navbar">
                 <ul class="nav">
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
-                    <li class="nav-item"> <p class="navbar-text"> Flower power (show currency here) </p> </li>
-                </ul>
+                    <li class="nav-item"> <p class="navbar-text"> Flower score: {{ fs }} </p> </li>
+                    <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
+                 </ul>
                 <ul class="nav">
-                    <li class="nav-item"> <a class="nav-link" href="#"> Profile </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
                 </ul>
             </nav>
@@ -50,18 +51,19 @@ P02: Makers Makin' It, Act I
             </div>
             <!------>
 
-            <!-- flash messages -->
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <!------>
+        <!-- flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+                <br>
+                <div class="alert alert-info">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+                </div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <!------>
 
             <br>
 
@@ -91,6 +93,8 @@ P02: Makers Makin' It, Act I
                             <h4> {{ flower_type }}</h4>
                             cost: {{ cost }} <br>
                             days to grow: {{ max_growth }} <br>
+                            <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg">
+                            <img src="/app/images/daffodil.png" alt="image error">
                             <form action="{{ url_for('shop') }}" method="POST">
                                 <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
                                 <input type="submit" value="Purchase">
