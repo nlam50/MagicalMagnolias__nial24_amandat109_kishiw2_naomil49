@@ -330,26 +330,17 @@ def purchase():
     return redirect('shop')
 
 def buy(username, flower_id, cost):
-    # print(username, flower_id, cost)
     try:
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
-            print('q')
-            # print('q', quantity)
             if not quantity:
-                print(1)
                 quantity = 0
-                cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (username, flower_id, quantity + 1))
-                print('not q')
+                cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, 0)', (username, flower_id,))
             else:
-                print(2)
                 quantity = quantity[0]            
-                cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
-                print('q2')
-            # result = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
+            cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
             cursor.execute('UPDATE stats SET magicpower = magicpower - ? WHERE user = ?', (cost, username))
-            print('q3')
     except sqlite3.IntegrityError:
         flash('error')
 
