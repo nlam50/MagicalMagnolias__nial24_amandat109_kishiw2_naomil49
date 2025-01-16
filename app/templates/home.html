@@ -30,10 +30,11 @@ P02: Makers Makin' It, Act I
       <nav class="navbar">
       <ul class="nav">
       <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
-      <li class="nav-item"> <p class="navbar-text"> Flower power (show currency here) </p> </li>
+      <li class="nav-item"> <p class="navbar-text"> Flower score: {{ fs }} </p> </li>
+      <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
       </ul>
       <ul class="nav">
-      <li class="nav-item"> <a class="nav-link" href="#"> Profile </a> </li>
+      <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
       <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
       </ul>
       </nav>
@@ -75,12 +76,6 @@ P02: Makers Makin' It, Act I
         {% endif %}
       {% endwith %}
       <!------>
-
-      <br><br>
-
-      {% if session['username'] %}
-        user in session: {{ session['username'] }}
-      {% endif %}
 
       <br><br>
 

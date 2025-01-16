@@ -13,7 +13,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
 # database initialization
-
 def init_db():
     """initialize db if none exists"""
     conn = sqlite3.connect('magnolia.db')
@@ -81,6 +80,7 @@ def database_connect():
     conn = sqlite3.connect('magnolia.db')
     return conn
 
+
 #Flower
 def flowerbase():
     if not os.path.exists('magnolia.db'):
@@ -106,6 +106,7 @@ def flowerbase():
 
 
  #Stats
+
 def stats(user, magicpower, flowerscore):
     try:
         conn = database_connect()
@@ -182,7 +183,6 @@ def garden_pick(user, id):
 
 
 #Seeds
-
 def seeds(user):
     try:
         conn = database_connect()
@@ -209,6 +209,7 @@ def seeds_use(user, flower_id):
         print('Database Error')
     print("sed")
 
+
 #Profile
 def profile(user, flower_type, max_growth):
     try:
@@ -219,6 +220,25 @@ def profile(user, flower_type, max_growth):
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def flower_score(user):
+    try:
+        with sqlite3.connect('magnolia.db')as conn:
+            cursor = conn.cursor()
+            result = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()
+            result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('error')
+
+def magic_power(user):
+    try:
+        with sqlite3.connect('magnolia.db')as conn:
+            cursor = conn.cursor()
+            result = cursor.execute('SELECT magicpower FROM stats WHERE user = ?', (user,)).fetchone()
+            result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('error')
 
 # User
 def register_user():
@@ -271,6 +291,7 @@ def logout_user():
     flash('logged out')
     return redirect('/login')
 
+
 # Shop -> access flower db for info
 def get_flower():
     try:
@@ -284,7 +305,7 @@ def get_flower():
 def purchase():
     purchase_info = request.form.get('purchase_info')
     purchase_info = list(map(int, purchase_info.split('###')))
-    id = purchase_info[0]
+    flower_id = purchase_info[0]
     cost = purchase_info[1]
     username = session['username']
 
@@ -295,9 +316,10 @@ def purchase():
             magicpower = result[0]
             flowerscore = result[1]
 
-            if flowerscore >= id:
-                if magicpower >= cost:
+            if flowerscore >= flower_id:
+                if magicpower >= cost:                    
                     flash('user can buy')
+                    buy(username, flower_id)
                 else:
                     flash('not enough magic power. play minigames to earn more!')
             else:
@@ -305,6 +327,24 @@ def purchase():
     except sqlite3.IntegrityError:
         flash('error')
     return redirect('shop')
+
+def buy(username, flower_id):
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
+            if not quantity:
+                quantity = 0
+            else:
+                quantity = quantity[0]
+            print('in q', quantity)
+            cursor.execute('INSERT OR IGNORE INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (username, flower_id, quantity + 1))
+            cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ?', (quantity + 1, username))
+            result = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
+            print('new q', result)
+            # cursor.execute('UPDATE stats SET magicpower = ma')
+    except sqlite3.IntegrityError:
+        flash('error')
 
 # Game
 def inc_mp(n):

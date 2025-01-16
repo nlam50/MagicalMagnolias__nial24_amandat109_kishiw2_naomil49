@@ -31,10 +31,11 @@ P02: Makers Makin' It, Act I
             <nav class="navbar">
                 <ul class="nav">
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
-                    <li class="nav-item"> <p class="navbar-text"> Flower power (show currency here) </p> </li>
+                    <li class="nav-item"> <p class="navbar-text"> Flower score: {{ fs }} </p> </li>
+                    <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
                 </ul>
                 <ul class="nav">
-                    <li class="nav-item"> <a class="nav-link" href="#"> Profile </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
                 </ul>
             </nav>
@@ -50,14 +51,15 @@ P02: Makers Makin' It, Act I
 
             <!-- flash messages -->
             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
+              {% if messages %}
+                {% for message in messages %}
+                  <br>
+                  <div class="alert alert-info">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
             {% endwith %}
             <!------>
 
