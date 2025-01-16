@@ -29,20 +29,19 @@ P02: Makers Makin' It, Act I
     <div class="container-fluid">
       <nav class="navbar">
       <ul class="nav">
-      <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
-      <li class="nav-item"> <p class="navbar-text"> Flower score: {{ fs }} </p> </li>
-      <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
+        <li class="nav-item"> <a class="nav-link" href="{{ url_for('home') }}"> Home </a> </li>
+        <li class="nav-item"> <p class="navbar-text"> Flower score: {{ fs }} </p> </li>
+        <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
       </ul>
       <ul class="nav">
-      <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
-      <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
+        <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
+        <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
       </ul>
       </nav>
     </div>
     <!------>
 
     <div class="container">
-
       <!-- header/info -->
       <h1> Magnolia Gardens </h1>
       <h6> <i> by Magical Magnolias </i> </h6>
@@ -82,10 +81,15 @@ P02: Makers Makin' It, Act I
       <a href="{{ url_for('game') }}">Game</a> &emsp;&emsp;
       <a href="{{ url_for('garden') }}">Garden</a> &emsp;&emsp;
       <!-- <a href="{{ url_for('logout') }}">Logout</a> &emsp;&emsp; -->
-      <a href="{{ url_for('shop') }}"> Shop </a>
-
-
-      <script src="/static/js/script.js"></script>
+      <a href="{{ url_for('shop') }}"> Shop </a>   
     </div>
+
+    <!-- footer -->
+    <footer class="footer">
+      <div class="container">
+        &emsp;&emsp;
+      </div>
+    </footer>
+    <!--  -->
   </body>
 </html>

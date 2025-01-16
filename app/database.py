@@ -263,14 +263,10 @@ def register_user():
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
                 conn.commit()
-<<<<<<< HEAD
                 stats(username, 1, 0, 0)
                 garden(username)
                 seeds(username)
-                flash('registered')
-=======
                 flash('User registered')
->>>>>>> refs/remotes/origin/main
         except sqlite3.IntegrityError:
             flash('Username already exists')
     return redirect('/login')
@@ -332,18 +328,11 @@ def purchase():
 
             if flowerscore >= flower_id:
                 if magicpower >= cost:
-<<<<<<< HEAD
-                    flash('user can buy')
-                    buy(username, flower_id, 0)
-                else:
-                    flash('not enough magic power. play minigames to earn more!')
-=======
                     m = 'Purchased x1 ' + flower_type
                     flash(m)
                     buy(username, flower_id, 0)
                 else:
                     flash('Not enough magic power. Play minigames to earn more!')
->>>>>>> refs/remotes/origin/main
             else:
                 # comment after, for testing purposes
                 buy(username, flower_id, 0)
