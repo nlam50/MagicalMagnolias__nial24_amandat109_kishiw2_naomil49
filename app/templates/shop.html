@@ -93,8 +93,7 @@ P02: Makers Makin' It, Act I
                             <h4> {{ flower_type }}</h4>
                             cost: {{ cost }} <br>
                             days to grow: {{ max_growth }} <br>
-                            <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg">
-                            <img src="/app/images/daffodil.png" alt="image error">
+                            <img src="/static/images/daffodil.png" alt="image error">
                             <form action="{{ url_for('shop') }}" method="POST">
                                 <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
                                 <input type="submit" value="Purchase">
