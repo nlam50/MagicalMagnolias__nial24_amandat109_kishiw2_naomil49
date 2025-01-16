@@ -25,7 +25,8 @@ def init_db():
             cost INTEGER INTEGER NOT NULL,
             max_growth INTEGER NOT NULL,
             water_req INTEGER NOT NULL,
-            img TEXT UNIQUE NOT NULL
+            img TEXT UNIQUE NOT NULL,
+            min_days INTEGER NOT NULL
         )
     ''')
 
@@ -52,7 +53,7 @@ def init_db():
             user TEXT NOT NULL,
             flower_type TEXT NOT NULL,
             days_watered INTEGER NOT NULL,
-            day_last_watered INTEGER NOT NULL,
+            days_since_watered INTEGER NOT NULL,
             max_growth INTEGER NOT NULL
         )
     ''')
@@ -98,7 +99,8 @@ def flowerbase():
                     max_growth = info[3]
                     water_req = info[4]
                     img = info[5]
-                    cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img) VALUES (?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img))
+                    days = info[6]
+                    cursor.execute('INSERT INTO flower_base (ID, flower_type, cost, max_growth, water_req, img, min_days) VALUES (?, ?, ?, ?, ?, ?, ?)', (ID, flower_type, cost, max_growth, water_req, img, days))
                 conn.commit()
         except sqlite3.IntegrityError:
             flash('Database Error')
@@ -108,11 +110,12 @@ def flowerbase():
 
  #Stats
 
-def stats(user, magicpower, flowerscore):
+def stats(user, magicpower, flowerscore, days):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO stats (user, magicpower, flowerscore) VALUES (?, ?, ?)', (user, magicpower, flowerscore))
+        cursor.execute('INSERT INTO stats (user, magicpower, flowerscore, day) VALUES (?, ?, ?, ?)', (user, magicpower, flowerscore, days))
+        print("stats successs")
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
@@ -135,6 +138,7 @@ def garden(user):
             for c in range(6):
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO garden (user, flower_type, days_watered, days_since_watered, max_growth) VALUES (?, ?, ?, ?, ?)', (user, "none", 0, 0, 0))
+                print("garden success")
         conn.commit()
     except sqlite3.IntegrityError:
         flash('Database Error')
@@ -144,6 +148,7 @@ def get_garden(user):
         conn = database_connect()
         cursor = conn.cursor()
         result = cursor.execute('SELECT * FROM garden WHERE user = ?', (user)).fetchall()
+        return result
     except sqlite3.IntegrityError:
         flash('Database Error')
 
@@ -193,6 +198,7 @@ def seeds(user):
             for info in readn:
                 ID = info[0]
                 cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (user, ID, 0))
+                print("seeds success")
             conn.commit()
     except sqlite3.IntegrityError:
             flash('Database Error')
@@ -256,8 +262,10 @@ def register_user():
             with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
-                cursor.execute('INSERT INTO stats (user, magicpower, flowerscore, day) VALUES (?,?,?,?)', (username, 1, 1, 1))
                 conn.commit()
+                stats(username, 1, 0, 0)
+                garden(username)
+                seeds(username)
                 flash('registered')
         except sqlite3.IntegrityError:
             flash('username already exists')
@@ -297,6 +305,7 @@ def get_flower():
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             result = cursor.execute('SELECT * FROM flower_base').fetchall()
+            print("RESULT",result)
             return result
     except sqlite3.IntegrityError:
         flash('error')
@@ -316,10 +325,10 @@ def purchase():
             flowerscore = result[1]
 
             if flowerscore >= flower_id:
-                if magicpower >= cost:                    
+                if magicpower >= cost:
                     flash('user can buy')
                     buy(username, flower_id, 0)
-                else:                    
+                else:
                     flash('not enough magic power. play minigames to earn more!')
             else:
                 # comment after, for testing purposes
@@ -338,7 +347,7 @@ def buy(username, flower_id, cost):
                 quantity = 0
                 cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, 0)', (username, flower_id,))
             else:
-                quantity = quantity[0]            
+                quantity = quantity[0]
             cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
             cursor.execute('UPDATE stats SET magicpower = magicpower - ? WHERE user = ?', (cost, username))
     except sqlite3.IntegrityError:

@@ -66,7 +66,7 @@ def garden():
             id = request.form['pick']
             garden_water(user, id)
     garden_info = get_garden(user)
-    print(garden_info)
+    print("GARDEN: ",garden_info)
     flower_info = get_flower()
 
     # Access flower score + magic power
