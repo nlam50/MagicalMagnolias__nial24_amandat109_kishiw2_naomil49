@@ -235,7 +235,7 @@ def flower_score(user):
             result = result[0]
             return result
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database Error')
 
 def magic_power(user):
     try:
@@ -245,7 +245,7 @@ def magic_power(user):
             result = result[0]
             return result
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database Error')
 
 # User
 def register_user():
@@ -254,21 +254,25 @@ def register_user():
     confirm_pass = request.form.get('confirm_pass')
 
     if not username or not password or not confirm_pass:
-        flash('fill all fields')
+        flash('Please fill all fields')
     elif password != confirm_pass:
-        flash('passwords dont match')
+        flash('Password mismatch')
     else:
         try:
             with sqlite3.connect('magnolia.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
                 conn.commit()
+<<<<<<< HEAD
                 stats(username, 1, 0, 0)
                 garden(username)
                 seeds(username)
                 flash('registered')
+=======
+                flash('User registered')
+>>>>>>> refs/remotes/origin/main
         except sqlite3.IntegrityError:
-            flash('username already exists')
+            flash('Username already exists')
     return redirect('/login')
 
 def login_user():
@@ -276,7 +280,7 @@ def login_user():
     password = request.form.get('password')
 
     if not username or not password:
-        flash('fill all fields')
+        flash('Please fill all fields')
         return redirect('/login')
     else:
         with sqlite3.connect('magnolia.db') as conn:
@@ -287,15 +291,15 @@ def login_user():
             if user_pass:
                 if user_pass[0] == password:
                     session['username'] = username
-                    flash('logged in')
+                    flash('Successfully logged in')
                     return redirect('/')
             else:
-                flash('invalid credentials')
+                flash('Invalid credentials')
     return redirect('/login')
 
 def logout_user():
     session.pop('username',)
-    flash('logged out')
+    flash('Logged out')
     return redirect('/login')
 
 
@@ -308,13 +312,15 @@ def get_flower():
             print("RESULT",result)
             return result
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database error')
 
 def purchase():
     purchase_info = request.form.get('purchase_info')
-    purchase_info = list(map(int, purchase_info.split('###')))
-    flower_id = purchase_info[0]
-    cost = purchase_info[1]
+    purchase_info = purchase_info.split('###')
+    # print(purchase_info)
+    flower_id = int(purchase_info[0])
+    cost = int(purchase_info[1])
+    flower_type = purchase_info[2]
     username = session['username']
 
     try:
@@ -326,16 +332,24 @@ def purchase():
 
             if flowerscore >= flower_id:
                 if magicpower >= cost:
+<<<<<<< HEAD
                     flash('user can buy')
                     buy(username, flower_id, 0)
                 else:
                     flash('not enough magic power. play minigames to earn more!')
+=======
+                    m = 'Purchased x1 ' + flower_type
+                    flash(m)
+                    buy(username, flower_id, 0)
+                else:
+                    flash('Not enough magic power. Play minigames to earn more!')
+>>>>>>> refs/remotes/origin/main
             else:
                 # comment after, for testing purposes
                 buy(username, flower_id, 0)
-                flash('flower not unlocked')
+                flash('Flower not unlocked. Grow more flowers to increase flower score!')
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database error')
     return redirect('shop')
 
 def buy(username, flower_id, cost):
@@ -351,7 +365,7 @@ def buy(username, flower_id, cost):
             cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
             cursor.execute('UPDATE stats SET magicpower = magicpower - ? WHERE user = ?', (cost, username))
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database error')
 
 # Game
 def inc_mp(n):
@@ -361,4 +375,4 @@ def inc_mp(n):
             cursor = conn.cursor()
             cursor.execute('UPDATE stats SET magicpower = magicpower + ? WHERE user = ?', (n, username))
     except sqlite3.IntegrityError:
-        flash('error')
+        flash('Database error')

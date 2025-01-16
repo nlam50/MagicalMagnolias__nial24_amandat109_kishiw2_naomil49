@@ -68,12 +68,6 @@ P02: Makers Makin' It, Act I
             <br>
 
             <!-- shop -->
-            {% set id = 7 %}
-            {% set flower_type = 'tulip' %}
-            {% set cost = '4' %}
-            {% set max_growth = '2' %}
-            {% set len = info|length %}
-
             <!-- seed info -->
             {% for flower in info %}
                 <!-- variables -->
@@ -92,13 +86,12 @@ P02: Makers Makin' It, Act I
                         <div class="card">
                             <h4> {{ flower_type }}</h4>
                             cost: {{ cost }} <br>
-                            days to grow: {{ max_growth }} <br>
-                            <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg">
-                            <img src="/app/images/daffodil.png" alt="image error">
+                            days to grow: {{ max_growth }}
+                            <img src="/static/images/{{ img }}" alt="image error" style="margin: 5px;">
                             <form action="{{ url_for('shop') }}" method="POST">
-                                <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}">
+                                <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}###{{ flower_type }}">
                                 <input type="submit" value="Purchase">
-                            </form>                            
+                            </form>
                         </div>
                     </div>
                 {% if ((id-1)%3) == 2 %}
