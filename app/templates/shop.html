@@ -86,7 +86,8 @@ P02: Makers Makin' It, Act I
                         <div class="card">
                             <h4> {{ flower_type }}</h4>
                             cost: {{ cost }} <br>
-                            days to grow: {{ max_growth }}
+                            days to grow: {{ max_growth }} <br>
+                            min flower score: {{ id }}
                             <img src="/static/images/{{ img }}" alt="image error" style="margin: 5px;">
                             <form action="{{ url_for('shop') }}" method="POST">
                                 <input type="hidden" name="purchase_info" value="{{ id }}###{{ cost }}###{{ flower_type }}">

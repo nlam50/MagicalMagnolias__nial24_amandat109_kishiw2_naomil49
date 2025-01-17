@@ -5,8 +5,8 @@
 # 2025-01-15
 
 import random
-from flask import request, redirect, flash, render_template
-from database import inc_mp, type_to_name
+from flask import session, request, redirect, flash, render_template
+from database import inc_mp, type_to_name, flower_score, magic_power
 
 def rand_addition():
     n1 = random.randint(10, 50)
@@ -37,7 +37,10 @@ def game_function():
 
     if not ans1 or not ans2 or not ans3:
         flash('fill out all fields!')
-        return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3)
+        user = session['username']
+        fs = flower_score(user)
+        mp = magic_power(user)
+        return render_template('game.html', eq1=eq1, eq2=eq2, eq3=eq3, fs=fs, mp=mp)
 
     ans1, ans2, ans3 = int(ans1), int(ans2), int(ans3)
 
