@@ -164,7 +164,7 @@ def garden_add(user, ID, flower_type):
         pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         print("PREtest: ",pretest)
 
-        cursor.execute('UPDATE garden SET flower_type = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
+        cursor.execute('UPDATE garden SET flower_type = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', (flower_type, 0, max, user, ID))
 
         test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         print("test: ",test)
@@ -173,6 +173,7 @@ def garden_add(user, ID, flower_type):
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
+
 
 def garden_water(user, ID):
     try:
