@@ -229,22 +229,20 @@ def garden_pick(user, id):
         conn = database_connect()
         cursor = conn.cursor()
         flower_type = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
-        max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
-        cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
-        flower_score = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()[0]
-        flower_score = flower_score + 1
-        cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (flower_score, user))
-        conn.commit()
-
         flower_type = flower_type[0]
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         max_growth = max_growth[0]
+
         days = cursor.execute('SELECT days_watered FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         days = days[0]
         if days != max_growth:
+            flower_score = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()[0]
+            flower_score = flower_score + 1
+            cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (flower_score, user))
             cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
             conn.commit()
             profile(user, flower_type, max_growth)
+        conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
 
@@ -332,6 +330,19 @@ def get_profile():
             user = session['username']
             result = cursor.execute('SELECT * FROM profile WHERE user = ?', (user,)).fetchall()
             return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
+def day_advance(user):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE garden SET days_since_watered = days_since_watered+1 WHERE user = ?', (user,))
+        # flowers = cursor.execute('SELECT * FROM garden WHERE user = ? AND flower_type != ?', (user, "none")).fetchall()
+        # print('day_advance flowers: ',flowers)
+        # for flower in flowers:
+        #     days = cursor.execute('SELECT * FROM garden WHERE user = ?', (user,)).fetchone()
+        conn.commit()
     except sqlite3.IntegrityError:
         flash('Database Error')
 

@@ -104,11 +104,9 @@ P02: Makers Makin' It, Act I
                                 <!-- option to water or pick flower in grid space -->
                                 {% if flower_type != 'none' %}
                                 <form action="/garden" method="POST">
-
                                   <button type="submit" name="water" value="{{ id }}">&#128167;</button>
                                 </form>
                                 <form action="/garden" method="POST">
-
                                   <button type="submit" name="pick" value="{{ id }}">&#128400;</button>
                                 </form>
                                 {% endif %}
@@ -123,7 +121,11 @@ P02: Makers Makin' It, Act I
                 {% endif %}
             {% endfor %}
             <!----->
-
+            <br>
+            <form action="/garden" method="POST">
+              <!-- <input type="hidden" name="time" value={{session['username']}}> -->
+              <input type="submit" name="time" value="Next Day">
+            </form>
         </div>
     </body>
 </html>
