@@ -170,19 +170,19 @@ def garden_add(user, ID, flower_type):
         print("info", user, ID, flower_type)
         conn = database_connect()
         cursor = conn.cursor()
-        max = cursor.execute('SELECT max_growth FROM flower_base WHERE id = ?', (flower_type,)).fetchone()
+        max = cursor.execute('SELECT max_growth FROM flower_base WHERE flower_type = ?', (flower_type,)).fetchone()
         print('max', max)
         max = max[0]
-        # print("garden_add: FLOWER_TYPE: ",flower_type)
-        # pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
-        # print("PREtest: ",pretest)
+        print("garden_add: FLOWER_TYPE: ",flower_type)
+        pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        print("PREtest: ",pretest)
 
         cursor.execute('UPDATE garden SET flower_type = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
 
-        # test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
-        # print("test: ",test)
-        # databasetest = cursor.execute('SELECT * FROM garden').fetchall()
-        # print("POST-ADD database setup:",databasetest)
+        test = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        print("test: ",test)
+        databasetest = cursor.execute('SELECT * FROM garden').fetchall()
+        print("POST-ADD database setup:",databasetest)
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
@@ -193,11 +193,14 @@ def garden_water(user, ID):
         conn = database_connect()
         cursor = conn.cursor()
         days_watered = cursor.execute('SELECT days_watered FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        days_watered = days_watered[0]
         days_since_watered = cursor.execute('SELECT days_since_watered FROM garden WHERE user = ? AND id = ?', (user, ID)).fetchone()
+        days_since_watered = days_since_watered[0]
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        max_growth = max_growth[0]
         if(days_since_watered != 0 and days_watered != max_growth):
             print('d', days_watered)
-            n = days_watered[0] + 1
+            n = days_watered + 1
             cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND id = ?', (n, user, ID,))
             cursor.execute('UPDATE garden SET days_since_watered = ? WHERE user = ? AND id = ?', (0, user, ID,))
         conn.commit()
@@ -217,10 +220,15 @@ def garden_pick(user, id):
         conn.commit()
 
         flower_type = flower_type[0]
+        max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         max_growth = max_growth[0]
-        profile(user, flower_type, max_growth)
-        print("flowertype", flower_type)
-        seeds_use(user, int(flower_type))
+        days = cursor.execute('SELECT days_watered FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
+        days = days[0]
+        if days != max_growth:
+            cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
+            conn.commit()
+            profile(user, flower_type, max_growth)
+            seeds_use(user, flower_type)
     except sqlite3.IntegrityError:
         print('Database Error')
 
@@ -259,8 +267,14 @@ def only_seeds(flower_info, user):
     try:
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
-            result = cursor.execute('SELECT flower_id, quantity FROM seeds WHERE user = ? AND quantity > 0', (user,)).fetchall()
-            # print("only_seeds", result)
+            ids = cursor.execute('SELECT flower_id FROM seeds WHERE user = ? AND quantity > 0', (user,)).fetchall()
+            print("only_seeds", ids)
+            result = []
+            for id in ids:
+                id = id[0]
+                print(id)
+                info = cursor.execute('SELECT * FROM flower_base WHERE id = ?', (id,)).fetchall()
+                print(info)
             return result
     except sqlite3.IntegrityError:
         flash('Database Error')
@@ -374,7 +388,7 @@ def buy(username, flower_id, cost):
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
-            
+
             if not quantity:
                 quantity = 0
                 cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (username, flower_id, 1))
