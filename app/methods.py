@@ -60,8 +60,9 @@ def profile_to_profile(profile):
     for item in profile:
         # print('item', item)
         k = li.keys()
-        flower_id = int(item[1])
-        flower_type = type_to_name(flower_id)
+        flower_type = item[1]
+        # flower_id = int(item[1])
+        # flower_type = type_to_name(flower_id)
         if flower_type in k:
             li[flower_type] = li[flower_type] + 1
         else:
