@@ -320,6 +320,20 @@ def get_profile():
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def type_to_name(flower_id):
+    if flower_id < 1 or flower_id > 7:
+        return 'none'
+    fdict = {
+        1: 'iris',
+        2: 'tulip',
+        3: 'sunflower',
+        4: 'daisy',
+        5: 'daffodil',
+        6: 'lavender',
+        7: 'magnolia'
+    }
+    return fdict[flower_id]
+
 # User
 def register_user():
     username = request.form.get('username')

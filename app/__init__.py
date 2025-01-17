@@ -7,8 +7,8 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session, flash
-from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile
-from methods import rand_addition, list_string, game_function
+from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile, type_to_name
+from methods import rand_addition, list_string, game_function, profile_to_profile
 
 # Session
 app = Flask(__name__)
@@ -115,14 +115,16 @@ def profile():
 
     stats = get_stats()
     profile = get_profile()
+    pli = profile_to_profile(profile)
 
     print("stats", stats)
     print("profile", profile)
+    print("pli", pli)
 
     user = session['username']
     fs = flower_score(user)
     mp = magic_power(user)
-    return render_template('profile.html', fs=fs, mp=mp, stats=stats, profile=profile)
+    return render_template('profile.html', fs=fs, mp=mp, stats=stats, profile=pli)
 
 # Run
 if __name__ == "__main__":

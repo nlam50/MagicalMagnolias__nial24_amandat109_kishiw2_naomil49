@@ -60,9 +60,14 @@ P02: Makers Makin' It, Act I
       <!------>
 
       {% set day = stats[3] %}
-      {% for flower in profile %}
-            hi
-      {% endfor %}
+      days: {{ day }} <br>
+
+        {% if profile[0] %}
+            flowers:
+        {% endif %}
+        {% for flower in profile %}
+            <br> number of {{ flower[0] }}: {{ flower[1]}}
+        {% endfor %}
 
 
 

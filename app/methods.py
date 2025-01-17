@@ -6,7 +6,7 @@
 
 import random
 from flask import request, redirect, flash, render_template
-from database import inc_mp
+from database import inc_mp, type_to_name
 
 def rand_addition():
     n1 = random.randint(10, 50)
@@ -54,3 +54,18 @@ def game_function():
         flash("correct!")
         inc_mp(1)
     return redirect('/game')
+
+def profile_to_profile(profile):
+    li = {}
+    for item in profile:
+        # print('item', item)
+        k = li.keys()
+        flower_id = int(item[1])
+        flower_type = type_to_name(flower_id)
+        if flower_type in k:
+            li[flower_type] = li[flower_type] + 1
+        else:
+            li[flower_type] = 1
+    a = list(li.items())
+    return a
+
