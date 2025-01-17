@@ -129,6 +129,17 @@ def stats_edit(user, magicpower, flowerscore):
     except sqlite3.IntegrityError:
         print('Database Error')
 
+def get_stats():
+    try:
+        with sqlite3.connect('magnolia.db') as  conn:
+            cursor = conn.cursor()
+            username = session['username']
+            result = conn.execute('SELECT * FROM stats WHERE user = ?', (username,)).fetchone()
+            result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 
 #Garden
 def garden(user):
@@ -201,6 +212,13 @@ def garden_pick(user, id):
         conn = database_connect()
         cursor = conn.cursor()
         flower_type = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
+        max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
+        cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
+        flower_score = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()[0]
+        flower_score = flower_score + 1
+        cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (flower_score, user))
+        conn.commit()
+
         flower_type = flower_type[0]
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         max_growth = max_growth[0]
@@ -292,6 +310,16 @@ def magic_power(user):
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def get_profile():
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            user = session['username']
+            result = cursor.execute('SELECT * FROM profile WHERE user = ?', (user,)).fetchone()
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 # User
 def register_user():
     username = request.form.get('username')
@@ -355,6 +383,23 @@ def get_flower():
     except sqlite3.IntegrityError:
         flash('Database error')
 
+def buy(username, flower_id, cost):
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
+
+            if not quantity:
+                quantity = 0
+                cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, ?)', (username, flower_id, 1))
+            else:
+                quantity = quantity[0]
+                cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
+            cursor.execute('UPDATE stats SET magicpower = magicpower - ? WHERE user = ?', (cost, username))
+            conn.commit()
+    except sqlite3.IntegrityError:
+        flash('Database error')
+
 def purchase():
     purchase_info = request.form.get('purchase_info')
     purchase_info = purchase_info.split('###')
@@ -375,31 +420,16 @@ def purchase():
                 if magicpower >= cost:
                     m = 'Purchased x1 ' + flower_type
                     flash(m)
-                    buy(username, flower_id, 0)
+                    buy(username, flower_id, cost)
                 else:
                     flash('Not enough magic power. Play minigames to earn more!')
             else:
                 # comment after, for testing purposes
-                buy(username, flower_id, 0)
+                buy(username, flower_id, cost)
                 flash('Flower not unlocked. Grow more flowers to increase flower score!')
     except sqlite3.IntegrityError:
         flash('Database error')
     return redirect('shop')
-
-def buy(username, flower_id, cost):
-    try:
-        with sqlite3.connect('magnolia.db') as conn:
-            cursor = conn.cursor()
-            quantity = cursor.execute('SELECT quantity FROM seeds WHERE user = ? AND flower_id = ?', (username,flower_id)).fetchone()
-            if not quantity:
-                quantity = 0
-                cursor.execute('INSERT INTO seeds (user, flower_id, quantity) VALUES (?, ?, 0)', (username, flower_id,))
-            else:
-                quantity = quantity[0]
-            cursor.execute('UPDATE seeds SET quantity = ? WHERE user = ? AND flower_id = ?', (quantity + 1, username, flower_id))
-            cursor.execute('UPDATE stats SET magicpower = magicpower - ? WHERE user = ?', (cost, username))
-    except sqlite3.IntegrityError:
-        flash('Database error')
 
 # Game
 def inc_mp(n):

@@ -10,7 +10,7 @@ P02: Makers Makin' It, Act I
 
 <html>
   <head>
-    <title>Home</title>
+    <title>{{ session['username'] }}'s Profile</title>
 
     <!-- bootstrap -->
     <meta charset="utf-8">
@@ -21,7 +21,6 @@ P02: Makers Makin' It, Act I
 
     <!-- css -->
     <link rel="stylesheet" href="/static/css/custom.css">
-    <link rel="stylesheet" href="/static/css/shop.css">
   </head>
 
   <body>
@@ -34,7 +33,7 @@ P02: Makers Makin' It, Act I
         <li class="nav-item"> <p class="navbar-text"> Magic power: {{ mp }} </p> </li>
       </ul>
       <ul class="nav">
-        <li class="nav-item"> <a class="nav-link" href="{{ url_for('profile') }}"> {{ session['username'] }}'s Profile </a> </li>
+        <li class="nav-item"> <a class="nav-link" href="#"> {{ session['username'] }}'s Profile </a> </li>
         <li class="nav-item"> <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a> </li>
       </ul>
       </nav>
@@ -43,23 +42,7 @@ P02: Makers Makin' It, Act I
 
     <div class="container">
       <!-- header/info -->
-      <h1> Magnolia Gardens </h1>
-      <h6> <i> by Magical Magnolias </i> </h6>
-
-      <div class="card">
-        <p>
-        Magnolia Gardens is a game about maintaining a garden of flowers. Users may plant flower seeds– each species has slightly different growth requirements. Flowers must be watered each day to grow. Water is infinitely available in the universe of the garden. Once a flower meets the requirement for days watered, it has bloomed and may be “picked” (transferred to the user’s inventory).
-        </p>
-        <p>
-        Another resource, magic power, automatically makes the flower bloom and is obtained from completing minigames of basic and simple arithmetic. Magic power may also be exchanged for flower seeds in the shop page.
-        </p>
-        <p>
-        Points called “flower score” will be assigned based on (equal to) the number of days taken to grow the flower. As the user progresses, “flower score” unlocks more flower varieties which will appear in the shop. The game may continue indefinitely, but the “goal” is to unlock the final “Mythical Magnolia.”
-        </p>
-        <p>
-        These interactions take place on a grid-based garden using JavaScript. The user’s profile displays minigame statistics and the flower score, as well as “picked” flowers. Users must be logged in to play.
-        </p>
-      </div>
+      <h1> {{ session['username'] }}'s Profile </h1>
       <!------>
 
       <!-- flash messages -->
@@ -76,13 +59,6 @@ P02: Makers Makin' It, Act I
       {% endwith %}
       <!------>
 
-      <br><br>
-
-      <a href="{{ url_for('game') }}">Game</a> &emsp;&emsp;
-      <a href="{{ url_for('garden') }}">Garden</a> &emsp;&emsp;
-      <!-- <a href="{{ url_for('logout') }}">Logout</a> &emsp;&emsp; -->
-      <a href="{{ url_for('shop') }}"> Shop </a>   
-    </div>
 
     <!-- footer -->
     <footer class="footer">

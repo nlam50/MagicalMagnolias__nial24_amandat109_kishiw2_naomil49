@@ -7,7 +7,7 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session, flash
-from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds
+from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile
 from methods import rand_addition, list_string, game_function
 
 # Session
@@ -100,13 +100,26 @@ def shop():
     if request.method == 'POST':
         # buy(session['username'], 1)
         return purchase()
-    info = get_flower()
+    info = F()
 
     # Access flower score + magic power
     user = session['username']
     fs = flower_score(user)
     mp = magic_power(user)
     return render_template('shop.html', info = info, fs=fs, mp=mp)
+
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        return redirect('/login')
+
+    stats = get_stats()
+    profile = get_profile()
+
+    user = session['username']
+    fs = flower_score(user)
+    mp = magic_power(user)
+    return render_template('profile.html', fs=fs, mp=mp, stats=stats, profile=profile)
 
 # Run
 if __name__ == "__main__":
