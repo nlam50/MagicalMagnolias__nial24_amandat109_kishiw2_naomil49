@@ -60,8 +60,8 @@ def init_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS profile (
-            user TEXT UNIQUE NOT NULL,
-            flower_type TEXT UNIQUE NOT NULL,
+            user TEXT NOT NULL,
+            flower_type TEXT NOT NULL,
             max_growth INTEGER NOT NULL
         )
     ''')
