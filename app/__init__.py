@@ -57,9 +57,9 @@ def garden():
             id = data[0]
             flower_id = data[1]
             flower_type = data[2]
-            print("buy flower:",flower_type)
-            print("buy flower_id:",flower_id)
-            print("buy id: ",id)
+            # print("buy flower:",flower_type)
+            # print("buy flower_id:",flower_id)
+            # print("buy id: ",id)
             garden_add(user, id, flower_type)
         if request.form.get('water'):
             id = request.form['water']
@@ -120,9 +120,9 @@ def profile():
     profile = get_profile()
     pli = profile_to_profile(profile)
 
-    print("stats", stats)
-    print("profile", profile)
-    print("pli", pli)
+    # print("stats", stats)
+    # print("profile", profile)
+    # print("pli", pli)
 
     user = session['username']
     fs = flower_score(user)
