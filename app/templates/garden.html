@@ -69,8 +69,8 @@ P02: Makers Makin' It, Act I
             {% for grid in garden_info %}
 
                 {% set id = grid[0] %}
-                {% set flower_type = grid[1] %}
-                {% set img = grid[5] %}
+                {% set tempuser = grid[1] %}
+                {% set flower_type = grid[2] %}
 
                 {% if (id%6) == 1 %}
                     <div  class="row">
@@ -81,30 +81,40 @@ P02: Makers Makin' It, Act I
                             <button class="dropbtn">
 
                               <!-- image of flower in grid if planted -->
-                              {% if flower_type != 'none' %}
-                                <img src="/images/{{flower_type}}.png">
+                              {% if flower_type != "none" %}
+                                <p>flower_type: {{flower_type}}</p>
+                                <img src="/static/images/{{ flower_type }}.png" alt="image error" style="margin: 5px;">
                               {% endif %}
 
                             </button>
                             <div class="dropdown-content">
-                              <form action="/garden/" method="POST">
+
 
                                 <!-- options to plant seed if none planted in grid space -->
-                                {% if flower_type != 'none' %}
+                                {% if flower_type == 'none' %}
+                                <form action="/garden" method="POST">
                                   {% for flower in flower_info %}
                                     {% set flower_id = flower[0] %}
                                     {% set name = flower[1] %}
-                                    <button name="flower" value="{{ id }},{{flower_id}},{{name}}"><img src="/images/{{img}}"></button>
+                                    {% set img = flower[5] %}
+                                    <button type="submit" name="flower" value="{{ id }}###{{flower_id}}###{{name}}"><img class="seed-img" src="/static/images/{{img}}"></button>
                                   {% endfor %}
+                                </form>
                                 {% endif %}
 
                                 <!-- option to water or pick flower in grid space -->
-                                {% if flower_type == 'none' %}
-                                  <button name="water" value="{{ id }}">&#128167;</button>
-                                  <button name="pick" value="{{ id }}">&#128400;</button>
+                                {% if flower_type != 'none' %}
+                                <form action="/garden" method="POST">
+
+                                  <button type="submit" name="water" value="{{ id }}">&#128167;</button>
+                                </form>
+                                <form action="/garden" method="POST">
+
+                                  <button type="submit" name="pick" value="{{ id }}">&#128400;</button>
+                                </form>
                                 {% endif %}
 
-                              </form>
+
                             </div>
                           </div>
                       <!-- grid space -->

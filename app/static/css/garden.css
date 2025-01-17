@@ -38,12 +38,14 @@ button{
 
 .drop:hover .dropdown-content {
   display: flex;
+  flex-direction: column;
+  width: 60%;
 }
 
 .drop:hover .dropbtn {
   background-color: #cff79c;
 }
 
-button img{
-  width: 80%;
+button .seed-img{
+  width: 75%;
 }
