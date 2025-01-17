@@ -100,3 +100,42 @@ naomiL -- 2025-01-16 01:33
 * came across error for rendering images (png? flower?)
 * database methods to purchase seeds + testing methods (cost=0)
 * duplicate user + flower_id columns debugging
+
+amandaT, naomiL, niaL, kishiW -- 2025-01-17 05:11
+* debugging for garden methods 
+  * database locked
+  * concatenate tuple (commas after queries)
+  * mismatched parameters numbers
+  * just overal debugging
+  * unique rows in stats, profile
+  * update keyword with , instead of AND
+* fixed garden methods (add, water, pick)
+  * requirements for seed, days watered 
+  * added days counter + increment method
+  * can only pick flowers after watering
+  * routing for form actions etc. to link functions
+* fixed garden template
+  * form names 
+  * row + grid spacing
+  * show images
+* created profile page + methods + styling
+  * debugging for methods
+  * unique rows (users and flower id mismatch)
+  * methods to convert id to name etc.
+* demo methods
+  * cheat flowerscore and magicpower html forms + backend methods
+* routing for shop
+* adjusted csv file 
+  * made max_growth and water_requirement equal 
+  * made cost reasonable
+* tested filtering seeds for planting in garden -> scrapped idea
+* logistics for shop
+  * cannot go into debt (no negative magic power)
+  * no infinite purchases (fixed cost)
+* design doc changes
+  * remove Javascript and excess functions
+  * update database structure
+* removed print statmeents and extraneous code in files 
+* reorganizzed/categorized functions in database.py
+* created script for video
+* addressed many merge conflicts

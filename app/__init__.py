@@ -7,7 +7,7 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session, flash
-from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile, type_to_name, day_advance, get_days
+from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile, type_to_name, day_advance, get_days, boost_mp, boost_fs
 from methods import rand_addition, list_string, game_function, profile_to_profile
 
 # Session
@@ -22,7 +22,13 @@ flowerbase()
 def home():
     if 'username' not in session:
         return redirect('/login')
-
+    if request.method == 'POST':
+        if request.form.get('flowerscore'):
+            n = int(request.form.get('flowerscore'))
+            boost_fs(session['username'], n)
+        if request.form.get('magicpower'):
+            n = int(request.form.get('magicpower'))
+            boost_mp(session['username'], n)
     # Access flower score + magic power
     user = session['username']
     fs = flower_score(user)
