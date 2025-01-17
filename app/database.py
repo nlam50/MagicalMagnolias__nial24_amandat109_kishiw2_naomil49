@@ -124,7 +124,7 @@ def stats_edit(user, magicpower, flowerscore):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE stats SET magicpower = ? AND flowerscore = ? WHERE user = ?', (magicpower, flowerscore, user))
+        cursor.execute('UPDATE stats SET magicpower = ?, flowerscore = ? WHERE user = ?', (magicpower, flowerscore, user))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
@@ -164,7 +164,7 @@ def garden_add(user, ID, flower_type):
         pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         print("PREtest: ",pretest)
 
-        cursor.execute('UPDATE garden SET flower_type = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
+        cursor.execute('UPDATE garden SET flower_type = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
 
         test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         print("test: ",test)
@@ -193,7 +193,7 @@ def garden_pick(user, id):
         cursor = conn.cursor()
         flower_type = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
-        cursor.execute('UPDATE garden SET flower_type = ? AND days_watered = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
+        cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
         conn.commit()
         profile(user, flower_type, max_growth)
     except sqlite3.IntegrityError:
