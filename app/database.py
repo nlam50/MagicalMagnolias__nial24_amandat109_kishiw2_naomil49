@@ -357,6 +357,17 @@ def day_advance(user):
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def boost_mp(user, cheat):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        mp = cursor.execute('SELECT magicpower FROM stats WHERE user = ?', (user,)).fetchone()
+        mp = mp[0] + cheat
+        cursor.execute('UPDATE stats SET magicpower = ? WHERE user = ?', (mp, user,))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 def type_to_name(flower_id):
     if flower_id < 1 or flower_id > 7:
         return 'none'
