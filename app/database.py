@@ -185,7 +185,10 @@ def garden_water(user, ID):
         days_since_watered = cursor.execute('SELECT days_since_watered FROM garden WHERE user = ? AND id = ?', (user, ID)).fetchone()
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         if(days_since_watered != 0 and days_watered != max_growth):
-            cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND id = ?', (days_watered + 1, user, ID,))
+            print('d', days_watered)
+            n = days_watered[0] + 1
+            cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND id = ?', (n, user, ID,))
+            cursor.execute('UPDATE garden SET days_since_watered = ? WHERE user = ? AND id = ?', (0, user, ID,))
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
@@ -198,6 +201,9 @@ def garden_pick(user, id):
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
         conn.commit()
+
+        flower_type = flower_type[0]
+        max_growth = max_growth[0]
         profile(user, flower_type, max_growth)
     except sqlite3.IntegrityError:
         print('Database Error')
