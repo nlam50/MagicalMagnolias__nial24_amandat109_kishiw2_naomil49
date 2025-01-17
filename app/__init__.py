@@ -57,8 +57,9 @@ def garden():
             id = data[0]
             flower_id = data[1]
             flower_type = data[2]
-            # print("buy flower:",flower_type)
-            # print("buy id: ",id)
+            print("buy flower:",flower_type)
+            print("buy flower_id:",flower_id)
+            print("buy id: ",id)
             garden_add(user, id, flower_type)
         if request.form.get('water'):
             id = request.form['water']
@@ -68,7 +69,7 @@ def garden():
             garden_pick(user, id)
     garden_info = get_garden(user)
     flower_info = get_flower()
-    flower_info = only_seeds(flower_info, user)
+    # flower_info = only_seeds(flower_info, user)
 
     # Access flower score + magic power
     user = session['username']
