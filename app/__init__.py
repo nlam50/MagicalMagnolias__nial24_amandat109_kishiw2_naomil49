@@ -100,7 +100,7 @@ def shop():
     if request.method == 'POST':
         # buy(session['username'], 1)
         return purchase()
-    info = F()
+    info = get_flower()
 
     # Access flower score + magic power
     user = session['username']
