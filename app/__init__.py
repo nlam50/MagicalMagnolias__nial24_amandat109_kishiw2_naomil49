@@ -115,6 +115,9 @@ def profile():
     stats = get_stats()
     profile = get_profile()
 
+    print("stats", stats)
+    print("profile", profile)
+
     user = session['username']
     fs = flower_score(user)
     mp = magic_power(user)

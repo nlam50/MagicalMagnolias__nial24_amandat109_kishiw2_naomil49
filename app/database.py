@@ -135,7 +135,7 @@ def get_stats():
             cursor = conn.cursor()
             username = session['username']
             result = conn.execute('SELECT * FROM stats WHERE user = ?', (username,)).fetchone()
-            result = result[0]
+            # result = result[0]
             return result
     except sqlite3.IntegrityError:
         flash('Database Error')
@@ -301,7 +301,7 @@ def get_profile():
         with sqlite3.connect('magnolia.db') as conn:
             cursor = conn.cursor()
             user = session['username']
-            result = cursor.execute('SELECT * FROM profile WHERE user = ?', (user,)).fetchone()
+            result = cursor.execute('SELECT * FROM profile WHERE user = ?', (user,)).fetchall()
             return result
     except sqlite3.IntegrityError:
         flash('Database Error')
