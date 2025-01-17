@@ -60,7 +60,6 @@ def garden():
             print("buy flower:",flower_type)
             print("buy id: ",id)
             garden_add(user, id, flower_type)
-            seeds_use(user, flower_id)
         if request.form.get('water'):
             id = request.form['water']
             garden_water(user, id)

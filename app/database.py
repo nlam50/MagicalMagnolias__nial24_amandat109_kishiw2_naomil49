@@ -160,16 +160,16 @@ def garden_add(user, ID, flower_type):
         cursor = conn.cursor()
         max = cursor.execute('SELECT max_growth FROM flower_base WHERE flower_type = ?', (flower_type,)).fetchone()
         max = max[0]
-        print("garden_add: FLOWER_TYPE: ",flower_type)
-        pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
-        print("PREtest: ",pretest)
+        # print("garden_add: FLOWER_TYPE: ",flower_type)
+        # pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        # print("PREtest: ",pretest)
 
         cursor.execute('UPDATE garden SET flower_type = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
 
-        test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
-        print("test: ",test)
-        databasetest = cursor.execute('SELECT * FROM garden').fetchall()
-        print("POST-ADD database setup:",databasetest)
+        # test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
+        # print("test: ",test)
+        # databasetest = cursor.execute('SELECT * FROM garden').fetchall()
+        # print("POST-ADD database setup:",databasetest)
         conn.commit()
     except sqlite3.IntegrityError:
         print('Database Error')
