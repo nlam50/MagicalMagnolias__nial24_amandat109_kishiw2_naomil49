@@ -368,6 +368,17 @@ def boost_mp(user, cheat):
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def boost_fs(user, cheat):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        fs = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()
+        fs = fs[0] + cheat
+        cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (fs, user,))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 def type_to_name(flower_id):
     if flower_id < 1 or flower_id > 7:
         return 'none'
