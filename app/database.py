@@ -60,8 +60,8 @@ def init_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS profile (
-            user TEXT UNIQUE NOT NULL,
-            flower_type TEXT UNIQUE NOT NULL,
+            user TEXT NOT NULL,
+            flower_type TEXT NOT NULL,
             max_growth INTEGER NOT NULL
         )
     ''')
@@ -151,6 +151,16 @@ def get_stats():
     except sqlite3.IntegrityError:
         flash('Database Error')
 
+def get_days():
+    try:
+        with sqlite3.connect('magnolia.db') as  conn:
+            cursor = conn.cursor()
+            username = session['username']
+            result = conn.execute('SELECT day FROM stats WHERE user = ?', (username,)).fetchone()
+            result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
 
 #Garden
 def garden(user):

@@ -7,7 +7,7 @@
 # Imports
 import os
 from flask import Flask, render_template, redirect, request, session, flash
-from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile, type_to_name, day_advance
+from database import register_user, login_user, init_db, logout_user, flowerbase, stats, stats_edit, garden, get_garden, garden_add, garden_pick, garden_water, seeds_use, profile, get_flower, purchase, flower_score, magic_power, buy, only_seeds, get_stats, get_profile, type_to_name, day_advance, get_days
 from methods import rand_addition, list_string, game_function, profile_to_profile
 
 # Session
@@ -77,7 +77,8 @@ def garden():
     user = session['username']
     fs = flower_score(user)
     mp = magic_power(user)
-    return render_template('garden.html', garden_info=garden_info, flower_info=flower_info, fs=fs, mp=mp)
+    d = get_days()
+    return render_template('garden.html', garden_info=garden_info, flower_info=flower_info, fs=fs, mp=mp, day=d)
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
