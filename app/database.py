@@ -338,6 +338,7 @@ def day_advance(user):
         conn = database_connect()
         cursor = conn.cursor()
         cursor.execute('UPDATE garden SET days_since_watered = days_since_watered+1 WHERE user = ?', (user,))
+        cursor.execute('UPDATE stats SET day = day+1 WHERE user = ?', (user,))
         # flowers = cursor.execute('SELECT * FROM garden WHERE user = ? AND flower_type != ?', (user, "none")).fetchall()
         # print('day_advance flowers: ',flowers)
         # for flower in flowers:
