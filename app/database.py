@@ -149,7 +149,7 @@ def get_garden(user):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        result = cursor.execute('SELECT * FROM garden WHERE user = ?', (user)).fetchall()
+        result = cursor.execute('SELECT * FROM garden WHERE user = ?', (user,)).fetchall()
         return result
     except sqlite3.IntegrityError:
         flash('Database Error')
@@ -159,16 +159,13 @@ def garden_add(user, ID, flower_type):
         conn = database_connect()
         cursor = conn.cursor()
         max = cursor.execute('SELECT max_growth FROM flower_base WHERE flower_type = ?', (flower_type,)).fetchone()
+        print('max', max)
         max = max[0]
         # print("garden_add: FLOWER_TYPE: ",flower_type)
         # pretest = cursor.execute('SELECT * FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         # print("PREtest: ",pretest)
 
-<<<<<<< HEAD
-        cursor.execute('UPDATE garden SET flower_type = ? AND days_since_watered = ? AND max_growth = ? WHERE user = ? AND id = ?', (flower_type, 0, max, user, ID))
-=======
         cursor.execute('UPDATE garden SET flower_type = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', (flower_type, 1, max, user, ID))
->>>>>>> beeb0fa7e856fc7f1678574923aa74e876d54a9a
 
         # test = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         # print("test: ",test)
@@ -234,6 +231,17 @@ def seeds_use(user, flower_id):
         print('Database Error')
     print("sed")
 
+# filer list of all flower info into only the ones user has seeds for
+def only_seeds(flower_info, user):
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            result = cursor.execute('SELECT flower_id, quantity FROM seeds WHERE user = ? AND quantity > 0', (user,)).fetchall()
+            # print("only_seeds", result)
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 
 #Profile
 def profile(user, flower_type, max_growth):
@@ -281,7 +289,7 @@ def register_user():
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO users (username, password) VALUES (?,?)', (username, password))
                 conn.commit()
-                stats(username, 1, 0, 0)
+                stats(username, 1, 1, 0)
                 garden(username)
                 seeds(username)
                 flash('User registered')
