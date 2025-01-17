@@ -205,6 +205,8 @@ def garden_pick(user, id):
         flower_type = flower_type[0]
         max_growth = max_growth[0]
         profile(user, flower_type, max_growth)
+        print("flowertype", flower_type)
+        seeds_use(user, int(flower_type))
     except sqlite3.IntegrityError:
         print('Database Error')
 
@@ -258,7 +260,7 @@ def profile(user, flower_type, max_growth):
         cursor.execute('INSERT INTO profile (user, flower_type, max_growth) VALUES (?, ?, ?)', (user, flower_type, max_growth,))
         conn.commit()
     except sqlite3.IntegrityError:
-        flash('Database Error')
+        flash('Database Error !!')
 
 def flower_score(user):
     try:
