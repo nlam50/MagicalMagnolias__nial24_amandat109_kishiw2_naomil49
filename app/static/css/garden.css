@@ -49,3 +49,7 @@ button{
 button .seed-img{
   width: 75%;
 }
+
+button .planted-img{
+  width: 100%;
+}

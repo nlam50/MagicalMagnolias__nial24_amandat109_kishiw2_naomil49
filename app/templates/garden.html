@@ -45,7 +45,7 @@ P02: Makers Makin' It, Act I
         <div class="container">
 
             <!-- header/info -->
-            <h1> {user}'s garden </h1>
+            <h1> {{session['username']}}'s garden </h1>
 
             <!------>
 
@@ -82,8 +82,7 @@ P02: Makers Makin' It, Act I
 
                               <!-- image of flower in grid if planted -->
                               {% if flower_type != "none" %}
-                                <p>flower_type: {{flower_type}}</p>
-                                <img src="/static/images/{{ flower_type }}.png" alt="image error" style="margin: 5px;">
+                                <img class="planted-img" src="/static/images/{{ flower_type }}.png" alt="image error" style="margin: 5px;">
                               {% endif %}
 
                             </button>
