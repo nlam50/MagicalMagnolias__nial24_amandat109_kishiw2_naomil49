@@ -215,7 +215,7 @@ def garden_water(user, ID):
         days_since_watered = days_since_watered[0]
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, ID,)).fetchone()
         max_growth = max_growth[0]
-        if(days_since_watered != 0 and days_watered != max_growth):
+        if(days_since_watered != 0 and days_watered < max_growth):
             print('d', days_watered)
             n = days_watered + 1
             cursor.execute('UPDATE garden SET days_watered = ? WHERE user = ? AND id = ?', (n, user, ID,))
@@ -235,7 +235,7 @@ def garden_pick(user, id):
 
         days = cursor.execute('SELECT days_watered FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         days = days[0]
-        if days != max_growth:
+        if days == max_growth:
             flower_score = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()[0]
             flower_score = flower_score + 1
             cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (flower_score, user))
@@ -337,7 +337,7 @@ def day_advance(user):
     try:
         conn = database_connect()
         cursor = conn.cursor()
-        cursor.execute('UPDATE garden SET days_since_watered = days_since_watered+1 WHERE user = ?', (user,))
+        cursor.execute('UPDATE garden SET days_since_watered = days_since_watered+1 WHERE user = ? AND flower_type != ?', (user,"none",))
         cursor.execute('UPDATE stats SET day = day+1 WHERE user = ?', (user,))
         # flowers = cursor.execute('SELECT * FROM garden WHERE user = ? AND flower_type != ?', (user, "none")).fetchall()
         # print('day_advance flowers: ',flowers)
