@@ -57,8 +57,8 @@ def garden():
             id = data[0]
             flower_id = data[1]
             flower_type = data[2]
-            print("buy flower:",flower_type)
-            print("buy id: ",id)
+            # print("buy flower:",flower_type)
+            # print("buy id: ",id)
             garden_add(user, id, flower_type)
         if request.form.get('water'):
             id = request.form['water']
@@ -75,49 +75,6 @@ def garden():
     fs = flower_score(user)
     mp = magic_power(user)
     return render_template('garden.html', garden_info=garden_info, flower_info=flower_info, fs=fs, mp=mp)
-
-#TESTING FOR ADDING TO DATABASE -> "Method Not Allowed - The method is not allowed for the requested URL." error
-'''
-@app.route('/garden/flower')
-def garden_flower():
-    if 'username' not in session:
-        return redirect('/login')
-
-    user = session['username']
-    if request.method == 'POST':
-        data = request.form['flower'].split('###')
-        id = data[0]
-        flower_id = data[1]
-        flower_type = data[2]
-        garden_add(user, id, flower_type)
-        seeds_use(user, flower_id)
-        return garden()
-    return garden()
-
-@app.route('/garden/water')
-def garden_water():
-    if 'username' not in session:
-        return redirect('/login')
-
-    user = session['username']
-    if request.method == 'POST':
-        id = request.form['water']
-        garden_water(user, id)
-        return garden()
-    return garden()
-
-@app.route('/garden/pick')
-def garden_pick():
-    if 'username' not in session:
-        return redirect('/login')
-
-    user = session['username']
-    if request.method == 'POST':
-        id = request.form['pick']
-        garden_pick(user, id)
-        return garden()
-    return garden()
-'''
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():

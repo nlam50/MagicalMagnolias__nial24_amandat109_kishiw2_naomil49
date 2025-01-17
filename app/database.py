@@ -156,9 +156,10 @@ def get_garden(user):
 
 def garden_add(user, ID, flower_type):
     try:
+        print("info", user, ID, flower_type)
         conn = database_connect()
         cursor = conn.cursor()
-        max = cursor.execute('SELECT max_growth FROM flower_base WHERE flower_type = ?', (flower_type,)).fetchone()
+        max = cursor.execute('SELECT max_growth FROM flower_base WHERE id = ?', (flower_type,)).fetchone()
         print('max', max)
         max = max[0]
         # print("garden_add: FLOWER_TYPE: ",flower_type)
