@@ -469,3 +469,13 @@ def inc_mp(n):
             cursor.execute('UPDATE stats SET magicpower = magicpower + ? WHERE user = ?', (n, username))
     except sqlite3.IntegrityError:
         flash('Database error')
+
+def get_picked_flowers(user):
+    try:
+        conn = database_connect()
+        cursor = conn.cursor()
+        result = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND flower_type != "none"', (user,)).fetchall()
+        picked_flowers = [flower[0] for flower in result]
+        return picked_flowers
+    except sqlite3.IntegrityError:
+        flash('Database Error')

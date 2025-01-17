@@ -57,7 +57,7 @@ P02: Makers Makin' It, Act I
         Points called “flower score” will be assigned based on (equal to) the number of days taken to grow the flower. As the user progresses, “flower score” unlocks more flower varieties which will appear in the shop. The game may continue indefinitely, but the “goal” is to unlock the final “Mythical Magnolia.”
         </p>
         <p>
-        These interactions take place on a grid-based garden using JavaScript. The user’s profile displays minigame statistics and the flower score, as well as “picked” flowers. Users must be logged in to play.
+        These interactions take place on a grid-based garden. The user’s profile displays minigame statistics and the flower score, as well as “picked” flowers. Users must be logged in to play.
         </p>
       </div>
       <!------>
@@ -81,7 +81,8 @@ P02: Makers Makin' It, Act I
       <a href="{{ url_for('game') }}">Game</a> &emsp;&emsp;
       <a href="{{ url_for('garden') }}">Garden</a> &emsp;&emsp;
       <!-- <a href="{{ url_for('logout') }}">Logout</a> &emsp;&emsp; -->
-      <a href="{{ url_for('shop') }}"> Shop </a>   
+      <a href="{{ url_for('shop') }}"> Shop </a> &emsp;&emsp;
+      <a href="{{ url_for('profile') }}"> Profile </a> &emsp;&emsp;
     </div>
 
     <!-- footer -->
