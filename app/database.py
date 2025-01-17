@@ -129,6 +129,17 @@ def stats_edit(user, magicpower, flowerscore):
     except sqlite3.IntegrityError:
         print('Database Error')
 
+def get_stats():
+    try:
+        with sqlite3.connect('magnolia.db') as  conn:
+            cursor = conn.cursor()
+            username = session['username']
+            result = conn.execute('SELECT * FROM stats WHERE user = ?', (username,)).fetchone()
+            result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
 
 #Garden
 def garden(user):
@@ -200,6 +211,9 @@ def garden_pick(user, id):
         flower_type = cursor.execute('SELECT flower_type FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         max_growth = cursor.execute('SELECT max_growth FROM garden WHERE user = ? AND id = ?', (user, id,)).fetchone()
         cursor.execute('UPDATE garden SET flower_type = ?, days_watered = ?, days_since_watered = ?, max_growth = ? WHERE user = ? AND id = ?', ("none", 0, 0, 0, user, id))
+        flower_score = cursor.execute('SELECT flowerscore FROM stats WHERE user = ?', (user,)).fetchone()[0]
+        flower_score = flower_score + 1
+        cursor.execute('UPDATE stats SET flowerscore = ? WHERE user = ?', (flower_score, user))
         conn.commit()
 
         flower_type = flower_type[0]
@@ -278,6 +292,16 @@ def magic_power(user):
             cursor = conn.cursor()
             result = cursor.execute('SELECT magicpower FROM stats WHERE user = ?', (user,)).fetchone()
             result = result[0]
+            return result
+    except sqlite3.IntegrityError:
+        flash('Database Error')
+
+def get_profile():
+    try:
+        with sqlite3.connect('magnolia.db') as conn:
+            cursor = conn.cursor()
+            user = session['username']
+            result = cursor.execute('SELECT * FROM profile WHERE user = ?', (user,)).fetchone()
             return result
     except sqlite3.IntegrityError:
         flash('Database Error')
