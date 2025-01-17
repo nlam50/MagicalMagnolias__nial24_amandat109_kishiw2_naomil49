@@ -454,7 +454,7 @@ def purchase():
                     flash('Not enough magic power. Play minigames to earn more!')
             else:
                 # comment after, for testing purposes
-                buy(username, flower_id, cost)
+                # buy(username, flower_id, cost)
                 flash('Flower not unlocked. Grow more flowers to increase flower score!')
     except sqlite3.IntegrityError:
         flash('Database error')
